@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Econo-Slab Quote Builder</title>
@@ -649,12 +647,12 @@
             </div>
             <div class="field full">
               <label>Sidewall Bay Widths (ft)</label>
-              <div id="sidewallBayInputs" class="bay-input-grid"></div>
+              <div id="sidewallBayInputs" class="bay-input-grid"><div class="bay-input"><label for="sidewallBaySpacings-0">Sidewall bay 1</label><input id="sidewallBaySpacings-0" type="number" min="0" step="0.1"></div><div class="bay-input"><label for="sidewallBaySpacings-1">Sidewall bay 2</label><input id="sidewallBaySpacings-1" type="number" min="0" step="0.1"></div></div>
               <input id="sidewallBaySpacings" type="hidden" value="25, 25">
             </div>
             <div class="field full">
               <label>Endwall Bay Widths (ft)</label>
-              <div id="endwallBayInputs" class="bay-input-grid"></div>
+              <div id="endwallBayInputs" class="bay-input-grid"><div class="bay-input"><label for="endwallBaySpacings-0">Endwall bay 1</label><input id="endwallBaySpacings-0" type="number" min="0" step="0.1"></div><div class="bay-input"><label for="endwallBaySpacings-1">Endwall bay 2</label><input id="endwallBaySpacings-1" type="number" min="0" step="0.1"></div></div>
               <input id="endwallBaySpacings" type="hidden" value="15, 15">
             </div>
             <div class="field">
@@ -667,7 +665,7 @@
             </div>
             <div class="field">
               <label for="baySpacingFt">Design Bay Spacing (ft)</label>
-              <input id="baySpacingFt" type="number" min="1" step="0.1" value="25" readonly>
+              <input id="baySpacingFt" type="number" min="1" step="0.1" value="25" readonly="">
             </div>
             <div class="field">
               <label for="snowLoad">Snow Load</label>
@@ -676,7 +674,7 @@
             <div class="field">
               <label for="snowUnit">Snow Unit</label>
               <select id="snowUnit">
-                <option value="psf" selected>psf</option>
+                <option value="psf" selected="">psf</option>
                 <option value="kpa">kPa</option>
               </select>
             </div>
@@ -684,9 +682,9 @@
               <label for="slabOverride">Thickness Override</label>
               <select id="slabOverride">
                 <option value="">Use lookup</option>
-                <option value="5">5 in</option>
-                <option value="6">6 in</option>
-                <option value="7">7 in</option>
+                <option value="5" disabled="">5 in</option>
+                <option value="6" disabled="">6 in</option>
+                <option value="7" disabled="">7 in</option>
                 <option value="8">8 in</option>
                 <option value="9">9 in</option>
                 <option value="10">10 in</option>
@@ -702,7 +700,7 @@
           <div class="grid">
             <div class="field full">
               <label for="projectDocs">Building Drawings / Documents (Optional)</label>
-              <input id="projectDocs" type="file" multiple accept=".pdf,.dwg,.dxf,.xlsx,.xls,.doc,.docx,.png,.jpg,.jpeg">
+              <input id="projectDocs" type="file" multiple="" accept=".pdf,.dwg,.dxf,.xlsx,.xls,.doc,.docx,.png,.jpg,.jpeg">
             </div>
           </div>
         </div>
@@ -723,7 +721,7 @@
             <div class="field full">
               <label for="accessMode">Mode</label>
               <select id="accessMode">
-                <option value="builder" selected>Builder / Customer</option>
+                <option value="builder" selected="">Builder / Customer</option>
                 <option value="internal">Econo-Slab Internal</option>
               </select>
             </div>
@@ -766,7 +764,7 @@
             </div>
             <div class="field">
               <label for="freightMethod">Freight Method</label>
-              <input id="freightMethod" value="By Customer" readonly>
+              <input id="freightMethod" value="By Customer" readonly="">
               <input id="freightCost" type="hidden" value="0">
             </div>
             <div class="field">
@@ -787,7 +785,7 @@
             </div>
             <div class="field">
               <label for="thrustPlateAssemblyCount">Thrust Plate Assemblies</label>
-              <input id="thrustPlateAssemblyCount" type="number" min="0" step="1" value="0" readonly>
+              <input id="thrustPlateAssemblyCount" type="number" min="0" step="1" value="0" readonly="">
             </div>
             <div class="field">
               <label>&nbsp;</label>
@@ -822,14 +820,37 @@
             <h2>Customer Preview</h2>
             <span id="customerStatus" class="status">Ready</span>
           </div>
-          <div class="summary-grid" id="customerMetrics"></div>
+          <div class="summary-grid" id="customerMetrics"><div class="metric"><span>Project</span><strong>Sample Econo-Slab Project</strong></div><div class="metric"><span>Quote</span><strong>26-ES-Q001</strong></div><div class="metric"><span>Dimensions</span><strong>30 ft W x 50 ft L</strong></div><div class="metric"><span>Design Bay</span><strong>25 ft</strong></div><div class="metric"><span>Snow Load</span><strong>42.0 psf</strong></div><div class="metric"><span>Slab Guidance</span><strong>8 in</strong></div><div class="metric"><span>Columns</span><strong>10</strong></div><div class="metric"><span>Documents</span><strong>0</strong></div></div>
         </section>
 
         <section>
           <div class="section-head">
             <h2>Preliminary Drawing</h2>
           </div>
-          <div class="drawing-wrap" id="customerDrawing"></div>
+          <div class="drawing-wrap" id="customerDrawing"><svg id="drawingSvg" xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" role="img" aria-label="Preliminary Econo-Slab plan view">
+        <style>
+          .bg{fill:#fff}.slab{fill:#f7f9fb;stroke:#111827;stroke-width:3}.bay{stroke:#c62828;stroke-width:2;stroke-dasharray:9 8}.endbay{stroke:#c62828;stroke-width:1.8;stroke-dasharray:6 7}.bar-grid{stroke:#466b55;stroke-width:1;opacity:.38;stroke-dasharray:4 5}.bar-splice{fill:#111827}.column-center{fill:#111827}.dim{stroke:#1f2937;stroke-width:1.8;marker-start:url(#arrow);marker-end:url(#arrow)}.tick{stroke:#1f2937;stroke-width:1.8}.label{fill:#111827;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:700}.small{fill:#374151;font-family:Arial,Helvetica,sans-serif;font-size:15px}
+        </style>
+        <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1f2937"></path></marker></defs>
+        <rect class="bg" x="0" y="0" width="900" height="520"></rect>
+        <rect class="slab" x="166.7" y="90.0" width="566.7" height="340.0" rx="3"></rect>
+        <line x1="166.7" y1="118.3" x2="733.3" y2="118.3" class="bar-grid"></line><line x1="166.7" y1="175.0" x2="733.3" y2="175.0" class="bar-grid"></line><line x1="166.7" y1="231.7" x2="733.3" y2="231.7" class="bar-grid"></line><line x1="166.7" y1="288.3" x2="733.3" y2="288.3" class="bar-grid"></line><line x1="166.7" y1="345.0" x2="733.3" y2="345.0" class="bar-grid"></line><line x1="166.7" y1="401.7" x2="733.3" y2="401.7" class="bar-grid"></line><line x1="195.0" y1="90.0" x2="195.0" y2="430.0" class="bar-grid"></line><line x1="251.7" y1="90.0" x2="251.7" y2="430.0" class="bar-grid"></line><line x1="308.3" y1="90.0" x2="308.3" y2="430.0" class="bar-grid"></line><line x1="365.0" y1="90.0" x2="365.0" y2="430.0" class="bar-grid"></line><line x1="421.7" y1="90.0" x2="421.7" y2="430.0" class="bar-grid"></line><line x1="478.3" y1="90.0" x2="478.3" y2="430.0" class="bar-grid"></line><line x1="535.0" y1="90.0" x2="535.0" y2="430.0" class="bar-grid"></line><line x1="591.7" y1="90.0" x2="591.7" y2="430.0" class="bar-grid"></line><line x1="648.3" y1="90.0" x2="648.3" y2="430.0" class="bar-grid"></line><line x1="705.0" y1="90.0" x2="705.0" y2="430.0" class="bar-grid"></line>
+        <rect class="bar-splice" x="377.0" y="116.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="116.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="116.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="377.0" y="173.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="173.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="173.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="377.0" y="229.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="229.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="229.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="377.0" y="286.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="286.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="286.3" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="377.0" y="343.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="343.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="343.0" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="377.0" y="399.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="592.3" y="399.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="700.0" y="399.7" width="10" height="4" rx="1"></rect><rect class="bar-splice" x="193.0" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="193.0" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="249.7" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="249.7" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="306.3" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="306.3" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="363.0" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="363.0" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="419.7" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="419.7" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="476.3" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="476.3" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="533.0" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="533.0" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="589.7" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="589.7" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="646.3" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="646.3" y="408.0" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="703.0" y="300.3" width="4" height="10" rx="1"></rect><rect class="bar-splice" x="703.0" y="408.0" width="4" height="10" rx="1"></rect>
+        <line x1="450.0" y1="90.0" x2="450.0" y2="430.0" class="bay"></line>
+        <line x1="166.7" y1="260.0" x2="733.3" y2="260.0" class="endbay"></line>
+        <circle class="column-center" cx="166.7" cy="90.0" r="2.2"></circle><circle class="column-center" cx="166.7" cy="430.0" r="2.2"></circle><circle class="column-center" cx="450.0" cy="90.0" r="2.2"></circle><circle class="column-center" cx="450.0" cy="430.0" r="2.2"></circle><circle class="column-center" cx="733.3" cy="90.0" r="2.2"></circle><circle class="column-center" cx="733.3" cy="430.0" r="2.2"></circle><circle class="column-center" cx="166.7" cy="90.0" r="2.2"></circle><circle class="column-center" cx="733.3" cy="90.0" r="2.2"></circle><circle class="column-center" cx="166.7" cy="430.0" r="2.2"></circle><circle class="column-center" cx="733.3" cy="430.0" r="2.2"></circle>
+        
+        <line class="dim" x1="166.7" y1="476.0" x2="733.3" y2="476.0"></line>
+        <line class="tick" x1="166.7" y1="456.0" x2="166.7" y2="496.0"></line>
+        <line class="tick" x1="733.3" y1="456.0" x2="733.3" y2="496.0"></line>
+        <text class="label" x="450.0" y="512.0" text-anchor="middle">OUT-TO-OUT OF CONCRETE 50' - 0"</text>
+        <line class="dim" x1="120.7" y1="90.0" x2="120.7" y2="430.0"></line>
+        <line class="tick" x1="100.7" y1="90.0" x2="140.7" y2="90.0"></line>
+        <line class="tick" x1="100.7" y1="430.0" x2="140.7" y2="430.0"></line>
+        <text class="label" x="102.7" y="260.0" transform="rotate(-90 102.7 260.0)" text-anchor="middle">OUT-TO-OUT OF CONCRETE 30' - 0"</text>
+        <text class="small" x="450.0" y="42" text-anchor="middle">Preliminary plan view - 30 ft W x 50 ft L; sidewall bays 25' / 25'</text>
+        <text class="small" x="450.0" y="68" text-anchor="middle">8 inch preliminary slab; final layout subject to engineering and admin review</text>
+      </svg></div>
         </section>
 
         <section>
@@ -837,7 +858,7 @@
             <h2>Estimated Price</h2>
           </div>
           <div class="body-pad">
-            <div class="price-band" id="customerPrice"></div>
+            <div class="price-band" id="customerPrice"><div><span class="label">Package Price</span><strong>$11,428.51</strong></div><div><span class="label">Tax</span><strong>$1,485.71</strong></div><div><span class="label">Total</span><strong>$12,914.22</strong></div></div>
             <div class="actions no-print">
               <button type="button" id="orderProject">Order Project</button>
             </div>
@@ -850,7 +871,7 @@
             <h2>Notes</h2>
           </div>
           <div class="body-pad">
-            <div id="customerNotes" class="notice"></div>
+            <div id="customerNotes" class="notice"><ul class="small-list"><li>Prototype estimate for workflow validation only.</li><li>Preliminary only. PDF values are based on slab punching shear only for main column, 8 in x 10 in base plate, 8 in edge distance, assumed 10 psf unfactored roof dead load, and corner columns at 1/4 main column load or less.</li></ul></div>
           </div>
         </section>
       </div>
@@ -859,9 +880,9 @@
         <section>
           <div class="section-head">
             <h2>Internal Review</h2>
-            <span id="internalStatus" class="status">Ready</span>
+            <span id="internalStatus" class="status">needs_pricing_review</span>
           </div>
-          <div class="summary-grid" id="internalMetrics"></div>
+          <div class="summary-grid" id="internalMetrics"><div class="metric"><span>Material Subtotal</span><strong>$7,542.81</strong></div><div class="metric"><span>Overhead</span><strong>$1,000.00</strong></div><div class="metric"><span>Engineering</span><strong>$1,000.00</strong></div><div class="metric"><span>Freight</span><strong>$0.00</strong></div><div class="metric"><span>Markup</span><strong>$1,885.70 (25%)</strong></div><div class="metric"><span>Tax</span><strong>$1,485.71</strong></div><div class="metric"><span>Total</span><strong>$12,914.22</strong></div><div class="metric"><span>Thrust Assemblies</span><strong>0</strong></div><div class="metric"><span>Columns</span><strong>10</strong></div><div class="metric"><span>Anchor Bolts</span><strong>40</strong></div><div class="metric"><span>Docs</span><strong>0</strong></div><div class="metric"><span>Status</span><strong>needs_pricing_review</strong></div></div>
         </section>
 
         <section class="takeoff-section">
@@ -872,7 +893,7 @@
           <div class="body-pad">
             <div class="takeoff-print-header">
               <h1>Material Takeoff</h1>
-              <p id="takeoffPrintMeta"></p>
+              <p id="takeoffPrintMeta">26-ES-Q001 | Sample Farms Ltd. | Sample Econo-Slab Project | 30 ft W x 50 ft L | Slab 8 in</p>
             </div>
             <table>
               <thead>
@@ -886,7 +907,167 @@
                   <th>Review</th>
                 </tr>
               </thead>
-              <tbody id="internalLines"></tbody>
+              <tbody id="internalLines">
+        <tr>
+          <td>15FC19</td>
+          <td>5/8 in threaded bar - 19 ft</td>
+          <td class="num">66</td>
+          <td>EA</td>
+          <td class="num">$26.79</td>
+          <td class="num">$1,768.14</td>
+          <td>Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</td>
+        </tr>
+      
+        <tr>
+          <td>15FC10</td>
+          <td>5/8 in threaded bar - 9.5 ft</td>
+          <td class="num">44</td>
+          <td>EA</td>
+          <td class="num">$13.40</td>
+          <td class="num">$589.38</td>
+          <td>Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</td>
+        </tr>
+      
+        <tr>
+          <td>15FC5</td>
+          <td>5/8 in threaded bar - 4.75 ft</td>
+          <td class="num">44</td>
+          <td>EA</td>
+          <td class="num">$6.70</td>
+          <td class="num">$294.69</td>
+          <td>Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</td>
+        </tr>
+      
+        <tr>
+          <td>15CON</td>
+          <td>15mm bar connector nuts</td>
+          <td class="num">110</td>
+          <td>EA</td>
+          <td class="num">$5.00</td>
+          <td class="num">$550.00</td>
+          <td>One connector nut for every threaded bar splice.</td>
+        </tr>
+      
+        <tr>
+          <td>10CC8L</td>
+          <td>8" channel corner section left</td>
+          <td class="num">4</td>
+          <td>EA</td>
+          <td class="num">$100.00</td>
+          <td class="num">$400.00</td>
+          <td>Master Price List default</td>
+        </tr>
+      
+        <tr>
+          <td>10CC8R</td>
+          <td>8" channel corner section right</td>
+          <td class="num">4</td>
+          <td>EA</td>
+          <td class="num">$100.00</td>
+          <td class="num">$400.00</td>
+          <td>Master Price List default</td>
+        </tr>
+      
+        <tr>
+          <td>10SPC8-16ga</td>
+          <td>8" spacer channel 10'</td>
+          <td class="num">8</td>
+          <td>EA</td>
+          <td class="num">$100.00</td>
+          <td class="num">$800.00</td>
+          <td>Side channel rule: each side uses two 10 ft corner legs, standard 10 ft spacer channels where possible, and one exact custom make-up spacer per side for any remaining length under 10 ft.</td>
+        </tr>
+      
+        <tr>
+          <td>AB0500</td>
+          <td>1/2 in anchor bolts c/w nuts and washers</td>
+          <td class="num">40</td>
+          <td>EA</td>
+          <td class="num">$15.00</td>
+          <td class="num">$600.00</td>
+          <td>MVP rule - validate against quote-form rules before customer issue</td>
+        </tr>
+      
+        <tr>
+          <td>15W30</td>
+          <td>SAS metal nuts</td>
+          <td class="num">178</td>
+          <td>EA</td>
+          <td class="num">$2.50</td>
+          <td class="num">$445.00</td>
+          <td>4 SAS metal nuts per threaded bar run plus 2 spare nuts.</td>
+        </tr>
+      
+        <tr>
+          <td>12SP8</td>
+          <td>8" splice plate - 12" long</td>
+          <td class="num">12</td>
+          <td>EA</td>
+          <td class="num">$12.00</td>
+          <td class="num">$144.00</td>
+          <td>One 12 in splice plate at every non-corner channel splice.</td>
+        </tr>
+      
+        <tr>
+          <td>SPSCREW</td>
+          <td>Self-drilling screws for splice plates</td>
+          <td class="num">96</td>
+          <td>EA</td>
+          <td class="num">$0.25</td>
+          <td class="num">$24.00</td>
+          <td>8 self-drilling screws per splice plate.</td>
+        </tr>
+      
+        <tr>
+          <td>RBC800</td>
+          <td>8" rebar chairs</td>
+          <td class="num">189</td>
+          <td>EA</td>
+          <td class="num">$0.60</td>
+          <td class="num">$113.40</td>
+          <td>One rebar chair per 10 ft of threaded bar stock length.</td>
+        </tr>
+      
+        <tr>
+          <td>1RWT</td>
+          <td>Rebar wire ties</td>
+          <td class="num">284</td>
+          <td>EA</td>
+          <td class="num">$0.05</td>
+          <td class="num">$14.20</td>
+          <td>Wire ties are 1.5x the calculated rebar chair count, rounded up.</td>
+        </tr>
+      
+        <tr>
+          <td>ABT4</td>
+          <td>Anchor bolt templates</td>
+          <td class="num">10</td>
+          <td>EA</td>
+          <td class="num">$30.00</td>
+          <td class="num">$300.00</td>
+          <td>MVP rule - validate against quote-form rules before customer issue</td>
+        </tr>
+      
+        <tr>
+          <td>CARE PKG</td>
+          <td>Care package</td>
+          <td class="num">1</td>
+          <td>EA</td>
+          <td class="num">$100.00</td>
+          <td class="num">$100.00</td>
+          <td>Every Econo-Slab project gets one care package.</td>
+        </tr>
+      
+        <tr>
+          <td>CRATE</td>
+          <td>Crate and bundle charge</td>
+          <td class="num">1</td>
+          <td>EA</td>
+          <td class="num">$1,000.00</td>
+          <td class="num">$1,000.00</td>
+          <td>Every Econo-Slab project gets one crating fee.</td>
+        </tr>
+      </tbody>
             </table>
           </div>
         </section>
@@ -896,7 +1077,7 @@
             <h2>Thrust Plate Assembly Scope</h2>
           </div>
           <div class="body-pad">
-            <div id="thrustAssemblySummary" class="notice"></div>
+            <div id="thrustAssemblySummary" class="notice warn"><ul class="small-list"><li>No thrust plate assemblies are included in this estimate.</li></ul></div>
           </div>
         </section>
 
@@ -905,7 +1086,7 @@
             <h2>Estimating Notes</h2>
           </div>
           <div class="body-pad">
-            <ul id="estimatingNotes" class="small-list"></ul>
+            <ul id="estimatingNotes" class="small-list"><li>Slab thickness: 8 in from width 30 ft, sidewall design bay 25 ft, and snow load 42 psf. Table inputs used: width 30 ft, bay 25 ft, snow 42 psf.</li><li>Concrete volume: 30 ft x 50 ft x 8 in divided by 27 = 37.04 yd3.</li><li>Thrust plate assembly: No thrust plate assemblies are included in this estimate.</li><li>15FC19 - 5/8 in threaded bar - 19 ft: 66 EA. Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</li><li>15FC10 - 5/8 in threaded bar - 9.5 ft: 44 EA. Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</li><li>15FC5 - 5/8 in threaded bar - 4.75 ft: 44 EA. Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.</li><li>15CON - 15mm bar connector nuts: 110 EA. One connector nut for every threaded bar splice.</li><li>10CC8L - 8" channel corner section left: 4 EA. Master Price List default</li><li>10CC8R - 8" channel corner section right: 4 EA. Master Price List default</li><li>10SPC8-16ga - 8" spacer channel 10': 8 EA. Side channel rule: each side uses two 10 ft corner legs, standard 10 ft spacer channels where possible, and one exact custom make-up spacer per side for any remaining length under 10 ft.</li><li>AB0500 - 1/2 in anchor bolts c/w nuts and washers: 40 EA. Master Price List default Review: MVP rule - validate against quote-form rules before customer issue</li><li>15W30 - SAS metal nuts: 178 EA. 4 SAS metal nuts per threaded bar run plus 2 spare nuts.</li><li>12SP8 - 8" splice plate - 12" long: 12 EA. One 12 in splice plate at every non-corner channel splice.</li><li>SPSCREW - Self-drilling screws for splice plates: 96 EA. 8 self-drilling screws per splice plate.</li><li>RBC800 - 8" rebar chairs: 189 EA. One rebar chair per 10 ft of threaded bar stock length.</li><li>1RWT - Rebar wire ties: 284 EA. Wire ties are 1.5x the calculated rebar chair count, rounded up.</li><li>ABT4 - Anchor bolt templates: 10 EA. Master Price List default Review: MVP rule - validate against quote-form rules before customer issue</li><li>CARE PKG - Care package: 1 EA. Every Econo-Slab project gets one care package.</li><li>CRATE - Crate and bundle charge: 1 EA. Every Econo-Slab project gets one crating fee.</li><li>Markup: 25% x material subtotal $7,542.81 = $1,885.70.</li><li>Quote total: material subtotal + overhead $1,000.00 + engineering $1,000.00 + freight $0.00 + markup, plus 13% tax.</li><li>Review item: MVP rule - validate against quote-form rules before customer issue</li></ul>
           </div>
         </section>
       </div>
@@ -914,7 +1095,7 @@
         <section>
           <div class="section-head">
             <h2>Master Price List</h2>
-            <span id="priceListStatus" class="status">Ready</span>
+            <span id="priceListStatus" class="status">53 / 53</span>
           </div>
           <div class="body-pad">
             <div class="price-list-toolbar no-print">
@@ -936,7 +1117,484 @@
                     <th>Source</th>
                   </tr>
                 </thead>
-                <tbody id="masterPriceListRows"></tbody>
+                <tbody id="masterPriceListRows">
+          <tr>
+            <td>1RWT</td>
+            <td>Rebar wire ties</td>
+            <td>EA</td>
+            <td class="num">$0.05</td>
+            <td class="num"><input class="master-price-input" data-code="1RWT" type="number" min="0" step="0.01" value="0.05"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC8L</td>
+            <td>8" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC8L" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC8R</td>
+            <td>8" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC8R" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC8-16ga</td>
+            <td>8" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC8-16ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP8</td>
+            <td>8" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP8" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>15CON</td>
+            <td>15mm bar connector nuts</td>
+            <td>EA</td>
+            <td class="num">$5.00</td>
+            <td class="num"><input class="master-price-input" data-code="15CON" type="number" min="0" step="0.01" value="5"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>15FC5</td>
+            <td>5/8 in threaded bar - 4.75 ft</td>
+            <td>EA</td>
+            <td class="num">$6.70</td>
+            <td class="num"><input class="master-price-input" data-code="15FC5" type="number" min="0" step="0.01" value="6.6975"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>15FC10</td>
+            <td>5/8 in threaded bar - 9.5 ft</td>
+            <td>EA</td>
+            <td class="num">$13.40</td>
+            <td class="num"><input class="master-price-input" data-code="15FC10" type="number" min="0" step="0.01" value="13.395"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>15FC19</td>
+            <td>5/8 in threaded bar - 19 ft</td>
+            <td>EA</td>
+            <td class="num">$26.79</td>
+            <td class="num"><input class="master-price-input" data-code="15FC19" type="number" min="0" step="0.01" value="26.79"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>15W30</td>
+            <td>SAS metal nuts</td>
+            <td>EA</td>
+            <td class="num">$2.50</td>
+            <td class="num"><input class="master-price-input" data-code="15W30" type="number" min="0" step="0.01" value="2.5"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>AB0500</td>
+            <td>1/2 in anchor bolts c/w nuts and washers</td>
+            <td>EA</td>
+            <td class="num">$15.00</td>
+            <td class="num"><input class="master-price-input" data-code="AB0500" type="number" min="0" step="0.01" value="15"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>ABT4</td>
+            <td>Anchor bolt templates</td>
+            <td>EA</td>
+            <td class="num">$30.00</td>
+            <td class="num"><input class="master-price-input" data-code="ABT4" type="number" min="0" step="0.01" value="30"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>CARE PKG</td>
+            <td>Care package</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="CARE PKG" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>CRATE</td>
+            <td>Crate and bundle charge</td>
+            <td>EA</td>
+            <td class="num">$1,000.00</td>
+            <td class="num"><input class="master-price-input" data-code="CRATE" type="number" min="0" step="0.01" value="1000"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>RBC800</td>
+            <td>8" rebar chairs</td>
+            <td>EA</td>
+            <td class="num">$0.60</td>
+            <td class="num"><input class="master-price-input" data-code="RBC800" type="number" min="0" step="0.01" value="0.6"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>SPSCREW</td>
+            <td>Self-drilling screws for splice plates</td>
+            <td>EA</td>
+            <td class="num">$0.25</td>
+            <td class="num"><input class="master-price-input" data-code="SPSCREW" type="number" min="0" step="0.01" value="0.25"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>5TPL</td>
+            <td>5" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="5TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>6TPL</td>
+            <td>6" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="6TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>7TPL</td>
+            <td>7" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="7TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>8TPL</td>
+            <td>8" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="8TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>9TPL</td>
+            <td>9" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="9TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC5L</td>
+            <td>5" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC5L" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC5R</td>
+            <td>5" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC5R" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC6L</td>
+            <td>6" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC6L" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC6R</td>
+            <td>6" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC6R" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC7L</td>
+            <td>7" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC7L" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC7R</td>
+            <td>7" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC7R" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC9L</td>
+            <td>9" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC9L" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC9R</td>
+            <td>9" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC9R" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC10L-12ga</td>
+            <td>10" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC10L-12ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC10R-12ga</td>
+            <td>10" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC10R-12ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC12L-12ga</td>
+            <td>12" channel corner section left</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC12L-12ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10CC12R-12ga</td>
+            <td>12" channel corner section right</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10CC12R-12ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC5</td>
+            <td>5" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC5" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC6-16ga</td>
+            <td>6" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC6-16ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC7-16ga</td>
+            <td>7" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC7-16ga" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC9</td>
+            <td>9" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC9" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC10</td>
+            <td>10" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC10" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10SPC12</td>
+            <td>12" spacer channel 10'</td>
+            <td>EA</td>
+            <td class="num">$100.00</td>
+            <td class="num"><input class="master-price-input" data-code="10SPC12" type="number" min="0" step="0.01" value="100"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>10TPL</td>
+            <td>10" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="10TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>11TPL</td>
+            <td>11" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="11TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP5</td>
+            <td>5" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP5" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP6</td>
+            <td>6" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP6" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP7</td>
+            <td>7" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP7" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP9</td>
+            <td>9" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP9" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP10</td>
+            <td>10" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP10" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP11</td>
+            <td>11" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP11" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12SP12</td>
+            <td>12" splice plate - 12" long</td>
+            <td>EA</td>
+            <td class="num">$12.00</td>
+            <td class="num"><input class="master-price-input" data-code="12SP12" type="number" min="0" step="0.01" value="12"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>12TPL</td>
+            <td>12" hot rolled steel thrust plate</td>
+            <td>EA</td>
+            <td class="num">$50.00</td>
+            <td class="num"><input class="master-price-input" data-code="12TPL" type="number" min="0" step="0.01" value="50"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>RBC600</td>
+            <td>5" rebar chairs</td>
+            <td>EA</td>
+            <td class="num">$0.60</td>
+            <td class="num"><input class="master-price-input" data-code="RBC600" type="number" min="0" step="0.01" value="0.6"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>RBC700</td>
+            <td>7" rebar chairs</td>
+            <td>EA</td>
+            <td class="num">$0.60</td>
+            <td class="num"><input class="master-price-input" data-code="RBC700" type="number" min="0" step="0.01" value="0.6"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>RBC900</td>
+            <td>9" rebar chairs</td>
+            <td>EA</td>
+            <td class="num">$0.60</td>
+            <td class="num"><input class="master-price-input" data-code="RBC900" type="number" min="0" step="0.01" value="0.6"></td>
+            <td>Local default</td>
+          </tr>
+        
+          <tr>
+            <td>RBC1000</td>
+            <td>10" rebar chairs</td>
+            <td>EA</td>
+            <td class="num">$0.60</td>
+            <td class="num"><input class="master-price-input" data-code="RBC1000" type="number" min="0" step="0.01" value="0.6"></td>
+            <td>Local default</td>
+          </tr>
+        </tbody>
               </table>
             </div>
           </div>
@@ -950,14 +1608,39 @@
             <button type="button" id="clearDashboardData" class="secondary no-print">Clear Test Data</button>
           </div>
           <div class="body-pad">
-            <div class="dashboard-grid" id="dashboardGauges"></div>
+            <div class="dashboard-grid" id="dashboardGauges">
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:0.0deg"><div class="gauge-value">0</div></div>
+          <span>Total Quotes</span>
+        </div>
+      
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:0.0deg"><div class="gauge-value">$0.00</div></div>
+          <span>Quote Value</span>
+        </div>
+      
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:0.0deg"><div class="gauge-value">0</div></div>
+          <span>Total Orders</span>
+        </div>
+      
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:0.0deg"><div class="gauge-value">$0.00</div></div>
+          <span>Order Value</span>
+        </div>
+      
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:0.0deg"><div class="gauge-value">0%</div></div>
+          <span>Close Rate</span>
+        </div>
+      </div>
           </div>
         </section>
 
         <section>
           <div class="section-head">
             <h2>User Performance</h2>
-            <span id="dashboardStatus" class="status">Ready</span>
+            <span id="dashboardStatus" class="status">0 quote(s), 0 order(s)</span>
           </div>
           <div class="body-pad">
             <div class="table-wrap">
@@ -974,7 +1657,7 @@
                     <th class="num">Close Rate</th>
                   </tr>
                 </thead>
-                <tbody id="dashboardUserRows"></tbody>
+                <tbody id="dashboardUserRows"><tr><td colspan="8">No quote or order activity has been recorded yet. Click Calculate Quote to record a quote, or Order Project to record an order.</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -983,7 +1666,7 @@
     </div>
   </main>
 
-  <script src="../data/rules/master_pricing_catalog.js"></script>
+  <script src="data/rules/master_pricing_catalog.js"></script>
   <script>
     const SNOW_COLUMNS_PSF = [21, 31, 42, 52, 63, 73];
     const FRAME_ROWS_FT = [20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -3172,5 +3855,6 @@
     applyAccessMode();
     renderEstimate();
   </script>
-</body>
-</html>
+
+
+</body></html>
