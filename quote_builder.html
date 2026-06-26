@@ -1,0 +1,3176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econo-Slab Quote Builder</title>
+  <style>
+    :root {
+      --ink: #1d252b;
+      --muted: #687179;
+      --line: #d9dee2;
+      --blue: #00a651;
+      --blue-2: #008f46;
+      --green: #00a651;
+      --red: #c62828;
+      --graphite: #33383d;
+      --paper: #ffffff;
+      --page: #f4f6f4;
+      --soft: #eef5f0;
+      --warn: #fff3cf;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.38;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    header {
+      background: #fff;
+      color: var(--ink);
+      padding: 16px 24px;
+      border-bottom: 4px solid var(--green);
+      box-shadow: 0 4px 18px rgba(29, 37, 43, 0.08);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .brand-logo {
+      width: min(360px, 45vw);
+      height: auto;
+      display: block;
+    }
+
+    .brand-copy {
+      border-left: 1px solid var(--line);
+      padding-left: 18px;
+      min-width: 0;
+    }
+
+    header h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      letter-spacing: 0;
+      color: var(--graphite);
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(360px, 430px) minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .form-panel {
+      align-self: start;
+      position: sticky;
+      top: 14px;
+      max-height: calc(100vh - 28px);
+      overflow: auto;
+    }
+
+    .section-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 17px;
+      color: var(--blue);
+    }
+
+    h3 {
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    form {
+      padding: 14px 16px 18px;
+    }
+
+    .group {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: 14px;
+    }
+
+    .group:first-child {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #c9d1dc;
+      border-radius: 6px;
+      padding: 8px 9px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 68px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      background: var(--green);
+      color: #fff;
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #fff;
+      color: var(--green);
+    }
+
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 3px solid rgba(0, 166, 81, 0.22);
+      outline-offset: 1px;
+    }
+
+    .output {
+      display: grid;
+      gap: 18px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      background: #e8efea;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .tab {
+      background: #fff;
+      color: var(--graphite);
+      border: 1px solid var(--line);
+      min-width: 132px;
+    }
+
+    .tab.active {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: grid;
+      gap: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 12px;
+      border-radius: 6px;
+      min-width: 0;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 20px;
+      overflow-wrap: anywhere;
+    }
+
+    .body-pad {
+      padding: 16px;
+    }
+
+    .price-band {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      background: #e8f7ee;
+      border: 1px solid #a7d9ba;
+      padding: 16px;
+      border-radius: 6px;
+    }
+
+    .price-band strong {
+      font-size: 25px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .notice {
+      background: var(--warn);
+      border: 1px solid #e2c979;
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+
+    .notice.warn {
+      border-color: #dfa6a6;
+      background: #fff0f0;
+    }
+
+    .drawing-wrap {
+      padding: 16px;
+      overflow: auto;
+    }
+
+    #drawingSvg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-width: 560px;
+      border: 1px solid var(--line);
+      background: #f7fafc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 9px 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--soft);
+      color: var(--ink);
+    }
+
+    td.num,
+    th.num {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+    }
+
+    .price-list-toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .master-price-input {
+      max-width: 120px;
+      text-align: right;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .gauge-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--soft);
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .gauge {
+      --fill: 0deg;
+      width: 112px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      background: conic-gradient(var(--green) var(--fill), #d7dde5 0);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .gauge::before {
+      content: "";
+      width: 72%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+    }
+
+    .gauge-value {
+      position: relative;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      max-width: 72px;
+      overflow-wrap: anywhere;
+    }
+
+    .gauge-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--green);
+      font-size: 12px;
+    }
+
+    .status.review {
+      background: var(--red);
+    }
+
+    .small-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .bay-input-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .bay-input {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .bay-input label {
+      font-size: 11px;
+      text-transform: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .takeoff-print-header {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      header,
+      .form-panel,
+      .tabs,
+      .no-print {
+        display: none !important;
+      }
+
+      main {
+        display: block;
+        padding: 0;
+      }
+
+      section {
+        border-radius: 0;
+        break-inside: avoid;
+      }
+
+      body.print-takeoff #customerView,
+      body.print-takeoff #internalView > section:not(.takeoff-section) {
+        display: none !important;
+      }
+
+      body.print-takeoff #internalView {
+        display: block !important;
+      }
+
+      body.print-takeoff .takeoff-section .section-head {
+        display: none !important;
+      }
+
+      body.print-takeoff .takeoff-print-header {
+        display: block !important;
+        margin-bottom: 12px;
+      }
+
+      body.print-takeoff .takeoff-print-header h1 {
+        color: #111827;
+        font-size: 22px;
+        margin: 0 0 5px;
+      }
+
+      body.print-takeoff .takeoff-print-header p {
+        color: #4b5563;
+        font-size: 12px;
+        margin: 0;
+      }
+
+      body.print-takeoff table {
+        font-size: 11px;
+      }
+
+      body.print-takeoff th,
+      body.print-takeoff td {
+        padding: 6px;
+      }
+    }
+
+    @media (max-width: 980px) {
+      main {
+        display: block;
+      }
+
+      .form-panel {
+        position: static;
+        max-height: none;
+        margin-bottom: 18px;
+      }
+
+      .summary-grid,
+      .price-band,
+      .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      header {
+        padding: 16px;
+      }
+
+      .brand-wrap {
+        display: grid;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        width: min(320px, 100%);
+      }
+
+      .brand-copy {
+        border-left: 0;
+        padding-left: 0;
+      }
+
+      main {
+        padding: 10px;
+      }
+
+      .grid,
+      .bay-input-grid,
+      .summary-grid,
+      .price-band,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-wrap">
+      <img class="brand-logo" src="assets/econo-slab-logo.png" alt="Econo-Slab">
+      <div class="brand-copy">
+        <h1>Quote Builder</h1>
+        <p>Project intake, preliminary slab guidance, customer-safe price preview, internal review, and plan visualization.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="form-panel">
+      <div class="section-head">
+        <h2>Project Input</h2>
+        <span id="statusBadge" class="status">Ready</span>
+      </div>
+      <form id="quoteForm">
+        <div class="group">
+          <h3>Customer</h3>
+          <div class="grid">
+            <div class="field full">
+              <label for="customerName">Company</label>
+              <input id="customerName" value="Sample Farms Ltd.">
+            </div>
+            <div class="field">
+              <label for="contactName">Contact</label>
+              <input id="contactName" value="Jamie Carter">
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" value="555-0100">
+            </div>
+            <div class="field full">
+              <label for="email">Email</label>
+              <input id="email" value="jamie@example.com">
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Project</h3>
+          <div class="grid">
+            <div class="field full">
+              <label for="projectName">Project Name</label>
+              <input id="projectName" value="Sample Econo-Slab Project">
+            </div>
+            <div class="field full">
+              <label for="siteAddress">Site Address</label>
+              <input id="siteAddress" value="Lot 12, Rural Route 4, Stoney Creek, ON">
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Building</h3>
+          <div class="grid">
+            <div class="field">
+              <label for="frameWidthFt">Width (ft)</label>
+              <input id="frameWidthFt" type="number" min="1" step="0.1" value="30">
+            </div>
+            <div class="field">
+              <label for="lengthFt">Length (ft)</label>
+              <input id="lengthFt" type="number" min="1" step="0.1" value="50">
+            </div>
+            <div class="field">
+              <label for="sidewallBayCount">Sidewall Bays</label>
+              <input id="sidewallBayCount" type="number" min="1" step="1" value="2">
+            </div>
+            <div class="field">
+              <label for="endwallBayCount">Endwall Bays</label>
+              <input id="endwallBayCount" type="number" min="1" step="1" value="2">
+            </div>
+            <div class="field full">
+              <label>Sidewall Bay Widths (ft)</label>
+              <div id="sidewallBayInputs" class="bay-input-grid"></div>
+              <input id="sidewallBaySpacings" type="hidden" value="25, 25">
+            </div>
+            <div class="field full">
+              <label>Endwall Bay Widths (ft)</label>
+              <div id="endwallBayInputs" class="bay-input-grid"></div>
+              <input id="endwallBaySpacings" type="hidden" value="15, 15">
+            </div>
+            <div class="field">
+              <label for="sidewallColumnCount">Sidewall Columns Total</label>
+              <input id="sidewallColumnCount" type="number" min="0" step="1" value="6">
+            </div>
+            <div class="field">
+              <label for="endwallColumnCount">Endwall Columns Total</label>
+              <input id="endwallColumnCount" type="number" min="0" step="1" value="4">
+            </div>
+            <div class="field">
+              <label for="baySpacingFt">Design Bay Spacing (ft)</label>
+              <input id="baySpacingFt" type="number" min="1" step="0.1" value="25" readonly>
+            </div>
+            <div class="field">
+              <label for="snowLoad">Snow Load</label>
+              <input id="snowLoad" type="number" min="0" step="0.1" value="42">
+            </div>
+            <div class="field">
+              <label for="snowUnit">Snow Unit</label>
+              <select id="snowUnit">
+                <option value="psf" selected>psf</option>
+                <option value="kpa">kPa</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="slabOverride">Thickness Override</label>
+              <select id="slabOverride">
+                <option value="">Use lookup</option>
+                <option value="5">5 in</option>
+                <option value="6">6 in</option>
+                <option value="7">7 in</option>
+                <option value="8">8 in</option>
+                <option value="9">9 in</option>
+                <option value="10">10 in</option>
+                <option value="11">11 in</option>
+                <option value="12">12 in</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Project Documents</h3>
+          <div class="grid">
+            <div class="field full">
+              <label for="projectDocs">Building Drawings / Documents (Optional)</label>
+              <input id="projectDocs" type="file" multiple accept=".pdf,.dwg,.dxf,.xlsx,.xls,.doc,.docx,.png,.jpg,.jpeg">
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Quote Notes</h3>
+          <div class="grid">
+            <div class="field full">
+              <label for="notes">Quote Notes</label>
+              <textarea id="notes">Prototype estimate for workflow validation only.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Access</h3>
+          <div class="grid">
+            <div class="field full">
+              <label for="accessMode">Mode</label>
+              <select id="accessMode">
+                <option value="builder" selected>Builder / Customer</option>
+                <option value="internal">Econo-Slab Internal</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="internalUsername">Internal Username</label>
+              <input id="internalUsername" autocomplete="username" placeholder="admin">
+            </div>
+            <div class="field">
+              <label for="internalPassword">Internal Password</label>
+              <input id="internalPassword" type="password" autocomplete="current-password" placeholder="Password">
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button type="button" id="unlockInternal" class="secondary">Unlock Internal</button>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button type="button" id="lockInternal" class="secondary hidden">Lock Internal</button>
+            </div>
+            <div class="field full">
+              <div id="internalAuthStatus" class="notice hidden"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="group internal-only hidden">
+          <h3>Internal Controls</h3>
+          <div class="grid">
+            <div class="field">
+              <label for="quoteNumber">Quote Number</label>
+              <input id="quoteNumber" value="" placeholder="26-ES-Q001">
+            </div>
+            <div class="field">
+              <label for="internalUser">Program User</label>
+              <input id="internalUser" value="Econo-Slab Rep">
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button type="button" id="newQuoteNumber" class="secondary">New Quote #</button>
+            </div>
+            <div class="field">
+              <label for="freightMethod">Freight Method</label>
+              <input id="freightMethod" value="By Customer" readonly>
+              <input id="freightCost" type="hidden" value="0">
+            </div>
+            <div class="field">
+              <label for="taxRate">Tax Rate</label>
+              <input id="taxRate" type="number" min="0" step="0.001" value="0.13">
+            </div>
+            <div class="field">
+              <label for="markupRate">Markup %</label>
+              <input id="markupRate" type="number" min="0" step="0.1" value="25">
+            </div>
+            <div class="field">
+              <label for="overheadCost">Overhead Cost</label>
+              <input id="overheadCost" type="number" min="0" step="0.01" value="1000">
+            </div>
+            <div class="field">
+              <label for="engineeringFee">Engineering Fee</label>
+              <input id="engineeringFee" type="number" min="0" step="0.01" value="1000">
+            </div>
+            <div class="field">
+              <label for="thrustPlateAssemblyCount">Thrust Plate Assemblies</label>
+              <input id="thrustPlateAssemblyCount" type="number" min="0" step="1" value="0" readonly>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button type="button" id="setThrustPlateAssemblies" class="secondary">Add Thrust Plate Assemblies</button>
+            </div>
+            <div class="field">
+              <label for="paymentTerms">Payment Terms</label>
+              <input id="paymentTerms" value="Full Payment Prior">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions no-print">
+          <button type="submit">Calculate Quote</button>
+          <button type="button" id="printCustomer" class="secondary">Print Customer View</button>
+          <button type="button" id="downloadJson" class="secondary internal-only hidden">Download JSON</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="output">
+      <div class="tabs no-print">
+        <button class="tab active" type="button" data-view="customerView">Customer View</button>
+        <button class="tab internal-only hidden" type="button" data-view="internalView">Internal View</button>
+        <button class="tab internal-only hidden" type="button" data-view="priceListView">Master Price List</button>
+        <button class="tab internal-only hidden" type="button" data-view="dashboardView">Dashboard</button>
+      </div>
+
+      <div id="customerView" class="view active">
+        <section>
+          <div class="section-head">
+            <h2>Customer Preview</h2>
+            <span id="customerStatus" class="status">Ready</span>
+          </div>
+          <div class="summary-grid" id="customerMetrics"></div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Preliminary Drawing</h2>
+          </div>
+          <div class="drawing-wrap" id="customerDrawing"></div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Estimated Price</h2>
+          </div>
+          <div class="body-pad">
+            <div class="price-band" id="customerPrice"></div>
+            <div class="actions no-print">
+              <button type="button" id="orderProject">Order Project</button>
+            </div>
+            <div id="orderStatus" class="notice hidden"></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Notes</h2>
+          </div>
+          <div class="body-pad">
+            <div id="customerNotes" class="notice"></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="internalView" class="view internal-only hidden">
+        <section>
+          <div class="section-head">
+            <h2>Internal Review</h2>
+            <span id="internalStatus" class="status">Ready</span>
+          </div>
+          <div class="summary-grid" id="internalMetrics"></div>
+        </section>
+
+        <section class="takeoff-section">
+          <div class="section-head">
+            <h2>Draft Material Lines</h2>
+            <button type="button" id="printTakeoff" class="secondary no-print internal-only hidden">Print Material Takeoff</button>
+          </div>
+          <div class="body-pad">
+            <div class="takeoff-print-header">
+              <h1>Material Takeoff</h1>
+              <p id="takeoffPrintMeta"></p>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th class="num">Qty</th>
+                  <th>Unit</th>
+                  <th class="num">Unit Price</th>
+                  <th class="num">Total</th>
+                  <th>Review</th>
+                </tr>
+              </thead>
+              <tbody id="internalLines"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Thrust Plate Assembly Scope</h2>
+          </div>
+          <div class="body-pad">
+            <div id="thrustAssemblySummary" class="notice"></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Estimating Notes</h2>
+          </div>
+          <div class="body-pad">
+            <ul id="estimatingNotes" class="small-list"></ul>
+          </div>
+        </section>
+      </div>
+
+      <div id="priceListView" class="view internal-only hidden">
+        <section>
+          <div class="section-head">
+            <h2>Master Price List</h2>
+            <span id="priceListStatus" class="status">Ready</span>
+          </div>
+          <div class="body-pad">
+            <div class="price-list-toolbar no-print">
+              <div class="field">
+                <label for="priceListSearch">Search Part / Description</label>
+                <input id="priceListSearch" placeholder="15FC19, TPL, chair, splice">
+              </div>
+              <button type="button" id="clearPriceOverrides" class="secondary">Clear Overrides</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Unit</th>
+                    <th class="num">Base Price</th>
+                    <th class="num">Master Price</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody id="masterPriceListRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="dashboardView" class="view internal-only hidden">
+        <section>
+          <div class="section-head">
+            <h2>Internal KPI Dashboard</h2>
+            <button type="button" id="clearDashboardData" class="secondary no-print">Clear Test Data</button>
+          </div>
+          <div class="body-pad">
+            <div class="dashboard-grid" id="dashboardGauges"></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>User Performance</h2>
+            <span id="dashboardStatus" class="status">Ready</span>
+          </div>
+          <div class="body-pad">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th class="num">Quotes</th>
+                    <th class="num">Quote Value</th>
+                    <th class="num">Avg Quote</th>
+                    <th class="num">Orders</th>
+                    <th class="num">Order Value</th>
+                    <th class="num">Avg Order</th>
+                    <th class="num">Close Rate</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardUserRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="../data/rules/master_pricing_catalog.js"></script>
+  <script>
+    const SNOW_COLUMNS_PSF = [21, 31, 42, 52, 63, 73];
+    const FRAME_ROWS_FT = [20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const BAY_TABLES_FT = [15, 20, 25, 30];
+
+    const THICKNESS_TABLE = {
+      15: {
+        20: [6, 6, 6, 6, 6, 6],
+        30: [6, 6, 6, 7, 7, 8],
+        40: [6, 6, 7, 8, 8, 9],
+        50: [6, 7, 8, 9, 9, 10],
+        60: [7, 8, 9, 9, 10, 11],
+        70: [7, 8, 9, 10, 11, 12],
+        80: [8, 9, 10, 11, 12, null],
+        90: [8, 9, 11, 12, null, null],
+        100: [8, 10, 11, null, null, null]
+      },
+      20: {
+        20: [6, 6, 6, 6, 7, 7],
+        30: [6, 6, 7, 8, 8, 9],
+        40: [6, 7, 8, 9, 10, 10],
+        50: [7, 8, 9, 10, 11, 12],
+        60: [8, 9, 10, 11, 12, null],
+        70: [8, 10, 11, 12, null, null],
+        80: [9, 10, 12, null, null, null],
+        90: [9, 11, null, null, null, null],
+        100: [10, 12, null, null, null, null]
+      },
+      25: {
+        20: [6, 6, 6, 7, 8, 8],
+        30: [6, 7, 8, 9, 9, 10],
+        40: [7, 8, 9, 10, 11, 12],
+        50: [8, 9, 10, 11, null, null],
+        60: [8, 10, 11, null, null, null],
+        70: [9, 11, 12, null, null, null],
+        80: [10, 12, null, null, null, null],
+        90: [10, null, null, null, null, null],
+        100: [11, null, null, null, null, null]
+      },
+      30: {
+        20: [6, 6, 7, 8, 8, 9],
+        30: [7, 8, 9, 9, 10, 11],
+        40: [8, 9, 10, 11, 12, null],
+        50: [8, 10, 11, null, null, null],
+        60: [9, 11, null, null, null, null],
+        70: [10, 12, null, null, null, null],
+        80: [11, null, null, null, null, null],
+        90: [12, null, null, null, null, null],
+        100: [12, null, null, null, null, null]
+      }
+    };
+
+    const RATES = {
+      formBarLf: 1.41,
+      barConnectorEa: 5,
+      channelLf: 10,
+      anchorEa: 15,
+      sasNutEa: 2.5,
+      splicePlateEa: 12,
+      carePackageEa: 100,
+      spliceScrewEa: 0.25,
+      rebarChairEa: 0.6,
+      anchorTemplateEa: 30,
+      wireTieEa: 0.05,
+      thrustPlateEa: 50
+    };
+
+    const DEFAULT_MARKUP_RATE = 0.25;
+    const PRICE_OVERRIDE_STORAGE_KEY = "econoSlabMasterPriceOverrides:v1";
+    const KPI_EVENT_STORAGE_KEY = "econoSlabKpiEvents:v1";
+    const INTERNAL_AUTH_STORAGE_KEY = "econoSlabInternalAuth:v1";
+    const ORDER_EMAIL_RECIPIENTS = [
+      "sales@econo-slab.com",
+      "justin@econo-slab.com",
+      "graeme@econo-slab.com"
+    ];
+    const INTERNAL_USERS = {
+      admin: "Econo2026!",
+      estimator: "Econo2026!"
+    };
+    const PRICING_CATALOG = window.ECONO_PRICING_CATALOG || { part_count: 0, items: {} };
+    const LOCAL_MASTER_PRICE_ITEMS = {
+      "1RWT": {
+        part: "1RWT",
+        description: "Rebar wire ties",
+        price_26ga_col_or_each: RATES.wireTieEa,
+        unit: "EA",
+        source_type: "local"
+      },
+      "SPSCREW": {
+        part: "SPSCREW",
+        description: "Self-drilling screws for splice plates",
+        price_26ga_col_or_each: RATES.spliceScrewEa,
+        unit: "EA",
+        source_type: "local"
+      },
+      "CRATE": {
+        part: "CRATE",
+        description: "Crate and bundle charge",
+        price_26ga_col_or_each: 1000,
+        unit: "EA",
+        source_type: "local"
+      }
+    };
+    const CHANNEL_PARTS_BY_THICKNESS = {
+      5: { left: "10CC5L", right: "10CC5R", spacer10: "10SPC5" },
+      6: { left: "10CC6L", right: "10CC6R", spacer10: "10SPC6-16ga" },
+      7: { left: "10CC7L", right: "10CC7R", spacer10: "10SPC7-16ga" },
+      8: { left: "10CC8L", right: "10CC8R", spacer10: "10SPC8-16ga" },
+      9: { left: "10CC9L", right: "10CC9R", spacer10: "10SPC9" },
+      10: { left: "10CC10L-12ga", right: "10CC10R-12ga", spacer10: "10SPC10" },
+      12: { left: "10CC12L-12ga", right: "10CC12R-12ga", spacer10: "10SPC12" }
+    };
+    const REBAR_CHAIR_BY_THICKNESS = {
+      5: "RBC600",
+      6: "RBC600",
+      7: "RBC700",
+      8: "RBC800",
+      9: "RBC900",
+      10: "RBC1000",
+      12: "RBC1000"
+    };
+    const THREAD_BAR_STOCK_LENGTHS = [
+      { code: "15FC19", lengthFt: 19, description: "5/8 in threaded bar - 19 ft" },
+      { code: "15FC10", lengthFt: 9.5, description: "5/8 in threaded bar - 9.5 ft" },
+      { code: "15FC5", lengthFt: 4.75, description: "5/8 in threaded bar - 4.75 ft" }
+    ];
+    function addLocalMasterPriceItem(code, description, unitPrice, unit = "EA") {
+      if (!LOCAL_MASTER_PRICE_ITEMS[code]) {
+        LOCAL_MASTER_PRICE_ITEMS[code] = {
+          part: code,
+          description,
+          price_26ga_col_or_each: unitPrice,
+          unit,
+          source_type: "local"
+        };
+      }
+    }
+
+    THREAD_BAR_STOCK_LENGTHS.forEach((item) => {
+      addLocalMasterPriceItem(item.code, item.description, item.lengthFt * RATES.formBarLf);
+    });
+    Object.entries(CHANNEL_PARTS_BY_THICKNESS).forEach(([thickness, parts]) => {
+      addLocalMasterPriceItem(parts.left, `${thickness}" channel corner section left`, RATES.channelLf * 10);
+      addLocalMasterPriceItem(parts.right, `${thickness}" channel corner section right`, RATES.channelLf * 10);
+      addLocalMasterPriceItem(parts.spacer10, `${thickness}" spacer channel 10'`, RATES.channelLf * 10);
+    });
+    Object.entries(REBAR_CHAIR_BY_THICKNESS).forEach(([thickness, code]) => {
+      addLocalMasterPriceItem(code, `${thickness}" rebar chairs`, RATES.rebarChairEa);
+    });
+    [5, 6, 7, 8, 9, 10, 11, 12].forEach((thickness) => {
+      addLocalMasterPriceItem(`${thickness}TPL`, `${thickness}" hot rolled steel thrust plate`, RATES.thrustPlateEa);
+      addLocalMasterPriceItem(`12SP${thickness}`, `${thickness}" splice plate - 12" long`, RATES.splicePlateEa);
+    });
+    addLocalMasterPriceItem("15CON", "15mm bar connector nuts", RATES.barConnectorEa);
+    addLocalMasterPriceItem("15W30", "SAS metal nuts", RATES.sasNutEa);
+    addLocalMasterPriceItem("AB0500", "1/2 in anchor bolts c/w nuts and washers", RATES.anchorEa);
+    addLocalMasterPriceItem("ABT4", "Anchor bolt templates", RATES.anchorTemplateEa);
+    addLocalMasterPriceItem("CARE PKG", "Care package", RATES.carePackageEa);
+    const THREAD_BAR_GRID_SPACING_FT = 5;
+    const THREAD_BAR_GRID_EDGE_OFFSET_FT = 2.5;
+    const THREAD_BAR_EXTRA_LENGTH_FT = 1;
+    const SAS_NUTS_PER_BAR_RUN = 4;
+    const SAS_NUT_SPARES = 2;
+    const REBAR_CHAIR_SPACING_FT = 10;
+    const WIRE_TIES_PER_REBAR_CHAIR = 1.5;
+    const SPLICE_SCREWS_PER_PLATE = 8;
+    const CHANNEL_CORNER_LEG_FT = 10;
+
+    const state = {
+      estimate: null,
+      internalAuthenticated: false,
+      internalLoginError: ""
+    };
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function asNumber(id, fallback = 0) {
+      const raw = byId(id).value;
+      if (String(raw).trim() === "") {
+        return fallback;
+      }
+      const value = Number(raw);
+      return Number.isFinite(value) ? value : fallback;
+    }
+
+    function quoteYearPrefix(date = new Date()) {
+      return String(date.getFullYear()).slice(-2);
+    }
+
+    function quoteSequenceKey(year = quoteYearPrefix()) {
+      return `econoSlabQuoteSequence:${year}`;
+    }
+
+    function storageGet(key) {
+      try {
+        return window.localStorage?.getItem(key) || "";
+      } catch {
+        return "";
+      }
+    }
+
+    function storageSet(key, value) {
+      try {
+        window.localStorage?.setItem(key, value);
+      } catch {
+        // Local file testing may not always expose localStorage.
+      }
+    }
+
+    function storageRemove(key) {
+      try {
+        window.localStorage?.removeItem(key);
+      } catch {
+        // Local file testing may not always expose localStorage.
+      }
+    }
+
+    function loadPriceOverrides() {
+      try {
+        const parsed = JSON.parse(storageGet(PRICE_OVERRIDE_STORAGE_KEY) || "{}");
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    let priceOverrides = loadPriceOverrides();
+
+    function savePriceOverrides() {
+      storageSet(PRICE_OVERRIDE_STORAGE_KEY, JSON.stringify(priceOverrides));
+    }
+
+    function priceOverride(partCode) {
+      const value = priceOverrides[partCode];
+      const number = Number(value);
+      return Number.isFinite(number) && number >= 0 ? number : null;
+    }
+
+    function loadKpiEvents() {
+      try {
+        const parsed = JSON.parse(storageGet(KPI_EVENT_STORAGE_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveKpiEvents(events) {
+      storageSet(KPI_EVENT_STORAGE_KEY, JSON.stringify(events.slice(-500)));
+    }
+
+    function normalizeUsername(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function loadInternalAuth() {
+      try {
+        const parsed = JSON.parse(storageGet(INTERNAL_AUTH_STORAGE_KEY) || "{}");
+        const username = normalizeUsername(parsed.username);
+        if (parsed.authenticated === true && INTERNAL_USERS[username]) {
+          return { username };
+        }
+      } catch {
+        return null;
+      }
+      return null;
+    }
+
+    function saveInternalAuth(username) {
+      const normalized = normalizeUsername(username);
+      state.internalAuthenticated = true;
+      state.internalLoginError = "";
+      storageSet(INTERNAL_AUTH_STORAGE_KEY, JSON.stringify({
+        authenticated: true,
+        username: normalized,
+        loginAt: new Date().toISOString()
+      }));
+    }
+
+    function clearInternalAuth() {
+      state.internalAuthenticated = false;
+      storageRemove(INTERNAL_AUTH_STORAGE_KEY);
+    }
+
+    function quoteUserLabel(estimate) {
+      const internalUser = String(byId("internalUser").value || "").trim();
+      if (hasInternalAccess() && internalUser) {
+        return internalUser;
+      }
+      return estimate.customer.contactName || estimate.customer.email || estimate.customer.name || "Unknown User";
+    }
+
+    function quoteUserKey(label) {
+      return String(label || "Unknown User").trim().toLowerCase();
+    }
+
+    function kpiEventFromEstimate(type, estimate) {
+      const user = quoteUserLabel(estimate);
+      return {
+        id: `${type}:${estimate.project.quoteNumber}`,
+        type,
+        quoteNumber: estimate.project.quoteNumber,
+        projectName: estimate.project.name,
+        customerName: estimate.customer.name,
+        user,
+        userKey: quoteUserKey(user),
+        value: Math.round((estimate.totals.total || 0) * 100) / 100,
+        packagePrice: Math.round((estimate.totals.packagePrice || 0) * 100) / 100,
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function upsertKpiEvent(type, estimate) {
+      const event = kpiEventFromEstimate(type, estimate);
+      const events = loadKpiEvents().filter((item) => item.id !== event.id);
+      events.push(event);
+      saveKpiEvents(events);
+      return event;
+    }
+
+    function recordQuoteRun(estimate = state.estimate) {
+      if (!estimate) {
+        return null;
+      }
+      return upsertKpiEvent("quote", estimate);
+    }
+
+    function recordOrderRun(estimate = state.estimate) {
+      if (!estimate) {
+        return null;
+      }
+      return upsertKpiEvent("order", estimate);
+    }
+
+    function nextQuoteNumber() {
+      const year = quoteYearPrefix();
+      const sequence = Number(storageGet(quoteSequenceKey(year)) || "0") + 1;
+      storageSet(quoteSequenceKey(year), String(sequence));
+      return `${year}-ES-Q${String(sequence).padStart(3, "0")}`;
+    }
+
+    function ensureQuoteNumber() {
+      const input = byId("quoteNumber");
+      const year = quoteYearPrefix();
+      const draftKey = `econoSlabCurrentDraftQuote:${year}`;
+      const manual = String(input.value || "").trim();
+      if (manual) {
+        storageSet(draftKey, manual);
+        input.value = manual;
+        return manual;
+      }
+      const existing = storageGet(draftKey);
+      if (existing) {
+        input.value = existing;
+        return existing;
+      }
+      const quoteNumber = nextQuoteNumber();
+      storageSet(draftKey, quoteNumber);
+      input.value = quoteNumber;
+      return quoteNumber;
+    }
+
+    function assignNewQuoteNumber() {
+      const quoteNumber = nextQuoteNumber();
+      storageSet(`econoSlabCurrentDraftQuote:${quoteYearPrefix()}`, quoteNumber);
+      byId("quoteNumber").value = quoteNumber;
+      return quoteNumber;
+    }
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function money(value) {
+      return new Intl.NumberFormat("en-CA", {
+        style: "currency",
+        currency: "CAD"
+      }).format(value || 0);
+    }
+
+    function formatNumber(value, digits = 2) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) {
+        return "";
+      }
+      return number.toLocaleString("en-CA", {
+        maximumFractionDigits: digits
+      });
+    }
+
+    function formatPercent(value) {
+      const number = Number(value) || 0;
+      return `${formatNumber(number * 100, 2)}%`;
+    }
+
+    function noteLines(value) {
+      return String(value || "")
+        .replace(/\\n/g, "\n")
+        .split(/\r?\n/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+
+    function roundUpChoice(value, choices) {
+      return choices.find((choice) => value <= choice) ?? null;
+    }
+
+    function frameWidthTableChoice(value, choices) {
+      const sorted = [...choices].sort((a, b) => a - b);
+      if (value <= sorted[0]) {
+        return sorted[0];
+      }
+      for (let index = 1; index < sorted.length; index += 1) {
+        const lower = sorted[index - 1];
+        const upper = sorted[index];
+        if (value <= upper) {
+          return value - lower <= 5 ? lower : upper;
+        }
+      }
+      return null;
+    }
+
+    function parseSpacingList(value) {
+      return String(value || "")
+        .split(/[,;\n]+/)
+        .map((item) => Number(item.trim()))
+        .filter((number) => Number.isFinite(number) && number > 0);
+    }
+
+    function spacingSum(values) {
+      return values.reduce((sum, value) => sum + value, 0);
+    }
+
+    function countFromSpacingValues(values, fallback = 1) {
+      return Math.max(1, values.length || fallback);
+    }
+
+    function isInternalMode() {
+      return byId("accessMode").value === "internal";
+    }
+
+    function hasInternalAccess() {
+      return isInternalMode() && state.internalAuthenticated;
+    }
+
+    function updateInternalAuthStatus() {
+      const status = byId("internalAuthStatus");
+      if (!isInternalMode()) {
+        status.className = "notice hidden";
+        status.textContent = "";
+        return;
+      }
+      status.className = state.internalLoginError ? "notice warn" : "notice";
+      if (hasInternalAccess()) {
+        status.textContent = `Internal access unlocked for ${normalizeUsername(byId("internalUsername").value) || "admin"}.`;
+        return;
+      }
+      status.textContent = state.internalLoginError || "Enter an internal username and password to unlock pricing, markup, dashboard, and material takeoff views.";
+    }
+
+    function applyAccessMode() {
+      const internal = hasInternalAccess();
+      document.querySelectorAll(".internal-only").forEach((item) => {
+        item.classList.toggle("hidden", !internal);
+      });
+      byId("unlockInternal").classList.toggle("hidden", internal);
+      byId("lockInternal").classList.toggle("hidden", !internal);
+      updateInternalAuthStatus();
+      if (!internal && (
+        byId("internalView").classList.contains("active")
+        || byId("priceListView").classList.contains("active")
+        || byId("dashboardView").classList.contains("active")
+      )) {
+        document.querySelector('[data-view="customerView"]').click();
+      }
+    }
+
+    function bayConfig(kind) {
+      if (kind === "sidewall") {
+        return {
+          countId: "sidewallBayCount",
+          hiddenId: "sidewallBaySpacings",
+          containerId: "sidewallBayInputs",
+          label: "Sidewall bay"
+        };
+      }
+      return {
+        countId: "endwallBayCount",
+        hiddenId: "endwallBaySpacings",
+        containerId: "endwallBayInputs",
+        label: "Endwall bay"
+      };
+    }
+
+    function syncBayHidden(kind) {
+      const config = bayConfig(kind);
+      const container = byId(config.containerId);
+      if (!container || typeof container.querySelectorAll !== "function") {
+        return;
+      }
+      const values = Array.from(container.querySelectorAll("input"))
+        .map((input) => Number(input.value))
+        .filter((value) => Number.isFinite(value) && value > 0);
+      byId(config.hiddenId).value = values.join(", ");
+    }
+
+    function renderBayInputs(kind) {
+      const config = bayConfig(kind);
+      const container = byId(config.containerId);
+      if (!container || typeof container.replaceChildren !== "function") {
+        return;
+      }
+      const currentValues = parseSpacingList(byId(config.hiddenId).value);
+      const count = Math.max(1, Math.round(asNumber(config.countId, countFromSpacingValues(currentValues))));
+      byId(config.countId).value = String(count);
+      const values = Array.from({ length: count }, (_, index) => currentValues[index] ?? "");
+      container.replaceChildren();
+      values.forEach((value, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "bay-input";
+        const label = document.createElement("label");
+        label.setAttribute("for", `${config.hiddenId}-${index}`);
+        label.textContent = `${config.label} ${index + 1}`;
+        const input = document.createElement("input");
+        input.id = `${config.hiddenId}-${index}`;
+        input.type = "number";
+        input.min = "0";
+        input.step = "0.1";
+        input.value = value === "" ? "" : String(value);
+        input.addEventListener("input", () => {
+          syncBayHidden(kind);
+          renderEstimate();
+        });
+        wrapper.append(label, input);
+        container.append(wrapper);
+      });
+      syncBayHidden(kind);
+    }
+
+    function initializeBayInputs() {
+      ["sidewall", "endwall"].forEach((kind) => {
+        const config = bayConfig(kind);
+        const values = parseSpacingList(byId(config.hiddenId).value);
+        byId(config.countId).value = String(countFromSpacingValues(values));
+        renderBayInputs(kind);
+        byId(config.countId).addEventListener("change", () => {
+          renderBayInputs(kind);
+          renderEstimate();
+        });
+      });
+    }
+
+    function spacingMax(values, fallback) {
+      return values.length ? Math.max(...values) : fallback;
+    }
+
+    function spacingPositions(values, total) {
+      const positions = [0];
+      let running = 0;
+      values.forEach((value) => {
+        running += value;
+        if (running > 0 && running < total) {
+          positions.push(running);
+        }
+      });
+      positions.push(total);
+      return [...new Set(positions.map((value) => Math.round(value * 100) / 100))].sort((a, b) => a - b);
+    }
+
+    function getProjectDocumentFiles() {
+      return Array.from(byId("projectDocs").files || []);
+    }
+
+    function getProjectDocuments() {
+      const files = getProjectDocumentFiles();
+      return files.map((file) => ({
+        name: file.name,
+        size: file.size,
+        type: file.type || ""
+      }));
+    }
+
+    function formatFileSize(bytes) {
+      const value = Number(bytes);
+      if (!Number.isFinite(value) || value <= 0) {
+        return "Unknown size";
+      }
+      if (value < 1024) {
+        return `${Math.round(value)} B`;
+      }
+      if (value < 1024 * 1024) {
+        return `${Math.round(value / 102.4) / 10} KB`;
+      }
+      return `${Math.round(value / 1024 / 102.4) / 10} MB`;
+    }
+
+    function readOrderAttachment(file) {
+      return new Promise((resolve) => {
+        const fallback = {
+          name: file?.name || "unnamed-file",
+          size: file?.size || 0,
+          type: file?.type || "",
+          embedded: false,
+          dataUrl: ""
+        };
+        if (!file || typeof FileReader === "undefined") {
+          resolve(fallback);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+          ...fallback,
+          embedded: true,
+          dataUrl: String(reader.result || "")
+        });
+        reader.onerror = () => resolve(fallback);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function collectOrderAttachments() {
+      const files = Array.from(byId("projectDocs").files || []);
+      return Promise.all(files.map(readOrderAttachment));
+    }
+
+    function catalogItems(extraItems = {}) {
+      return {
+        ...LOCAL_MASTER_PRICE_ITEMS,
+        ...(PRICING_CATALOG.items || {}),
+        ...extraItems
+      };
+    }
+
+    function catalogItem(partCode) {
+      return catalogItems()[partCode] || null;
+    }
+
+    function firstNumber(...values) {
+      for (const value of values) {
+        if (value === null || value === undefined || value === "") {
+          continue;
+        }
+        const number = Number(value);
+        if (Number.isFinite(number)) {
+          return number;
+        }
+      }
+      return null;
+    }
+
+    function baseUnitPrice(item) {
+      return item ? firstNumber(
+        item.price_26ga_col_or_each,
+        item.price_26ga_gal,
+        item.price_24ga_col,
+        item.price_24ga_gal
+      ) : null;
+    }
+
+    function catalogPrice(partCode, fallbackUnitPrice) {
+      const override = priceOverride(partCode);
+      if (override !== null) {
+        return {
+          unitPrice: override,
+          pricingSource: "Master Price List override",
+          reviewFlag: ""
+        };
+      }
+
+      const item = catalogItem(partCode);
+      const unitPrice = baseUnitPrice(item);
+
+      if (unitPrice !== null) {
+        return {
+          unitPrice,
+          pricingSource: item.source_type === "local" ? "Master Price List default" : `Quote Form PARTS INFO row ${item.source_row}`,
+          reviewFlag: ""
+        };
+      }
+
+      return {
+        unitPrice: Number(fallbackUnitPrice) || 0,
+        pricingSource: "Rule-based estimate",
+        reviewFlag: ""
+      };
+    }
+
+    function makeCatalogLine(code, fallbackDescription, quantity, unit, fallbackUnitPrice, reviewFlag = "", basis = "") {
+      const item = catalogItem(code);
+      const price = catalogPrice(code, fallbackUnitPrice);
+      return makeLine(
+        code,
+        item?.description || fallbackDescription,
+        quantity,
+        item?.unit || unit,
+        price.unitPrice,
+        [price.reviewFlag, reviewFlag].filter(Boolean).join(" "),
+        price.pricingSource,
+        basis
+      );
+    }
+
+    function partThickness(thicknessIn, partMap) {
+      const choices = Object.keys(partMap).map(Number).sort((a, b) => a - b);
+      const requested = Math.round(Number(thicknessIn) || 0);
+      if (partMap[requested]) {
+        return { requested, selected: requested, reviewFlag: "" };
+      }
+      const selected = roundUpChoice(requested, choices);
+      if (selected) {
+        return {
+          requested,
+          selected,
+          reviewFlag: `No exact part mapping for ${requested} in slab/channel depth; using ${selected} in parts for preliminary pricing.`
+        };
+      }
+      return {
+        requested,
+        selected: choices[choices.length - 1],
+        reviewFlag: `${requested} in slab/channel depth exceeds current part mapping; using largest mapped part for preliminary pricing.`
+      };
+    }
+
+    function spacerLengthPrefix(lengthFt) {
+      const rounded = Math.round(lengthFt * 10) / 10;
+      if (Math.abs(rounded - Math.round(rounded)) < 0.01) {
+        return String(Math.round(rounded));
+      }
+      if (Math.abs(rounded - (Math.floor(rounded) + 0.5)) < 0.01) {
+        return `${Math.floor(rounded)}5`;
+      }
+      return "";
+    }
+
+    function shortSpacerCode(thicknessIn, lengthFt) {
+      const prefix = spacerLengthPrefix(lengthFt);
+      if (!prefix) {
+        return null;
+      }
+      return [`${prefix}SPC${thicknessIn}`, `${prefix}SPC${Math.max(6, thicknessIn)}`]
+        .find((code) => catalogItem(code)) || null;
+    }
+
+    function buildChannelLines(lengthFt, widthFt, thicknessIn, estimatedFlag) {
+      const thickness = partThickness(thicknessIn, CHANNEL_PARTS_BY_THICKNESS);
+      const parts = CHANNEL_PARTS_BY_THICKNESS[thickness.selected];
+      let channelPieceCount = 8;
+      const lines = [
+        makeCatalogLine(parts.left, `${thickness.selected}" channel corner section left`, 4, "EA", RATES.channelLf * 10, thickness.reviewFlag),
+        makeCatalogLine(parts.right, `${thickness.selected}" channel corner section right`, 4, "EA", RATES.channelLf * 10, thickness.reviewFlag)
+      ];
+
+      const sidePlan = (sideLength) => {
+        const middleSpan = Math.max(0, Number(sideLength) - CHANNEL_CORNER_LEG_FT * 2);
+        let tenFootQty = Math.floor(middleSpan / 10);
+        let customLength = Math.round((middleSpan - tenFootQty * 10) * 100) / 100;
+        return {
+          middleSpan: Math.round(middleSpan * 100) / 100,
+          tenFootQty,
+          customLengths: customLength > 0.01 ? [customLength] : []
+        };
+      };
+
+      const sidePlans = [
+        { side: "length", sideCount: 2, plan: sidePlan(lengthFt) },
+        { side: "width", sideCount: 2, plan: sidePlan(widthFt) }
+      ];
+      const tenFootQty = sidePlans.reduce((sum, item) => sum + item.plan.tenFootQty * item.sideCount, 0);
+      const customQtyByLength = new Map();
+      sidePlans.forEach((item) => {
+        item.plan.customLengths.forEach((customLength) => {
+          customQtyByLength.set(customLength, (customQtyByLength.get(customLength) || 0) + item.sideCount);
+        });
+      });
+      const customBasis = `Side channel rule: each side uses two ${CHANNEL_CORNER_LEG_FT} ft corner legs, standard 10 ft spacer channels where possible, and one exact custom make-up spacer per side for any remaining length under 10 ft.`;
+      if (tenFootQty > 0) {
+        channelPieceCount += tenFootQty;
+        lines.push(makeCatalogLine(
+          parts.spacer10,
+          `${thickness.selected}" spacer channel 10'`,
+          tenFootQty,
+          "EA",
+          RATES.channelLf * 10,
+          thickness.reviewFlag,
+          customBasis
+        ));
+      }
+
+      [...customQtyByLength.entries()]
+        .sort((a, b) => a[0] - b[0])
+        .forEach(([customLength, quantity]) => {
+          channelPieceCount += quantity;
+          const lengthLabel = formatNumber(customLength);
+          const codeLength = String(Math.round(customLength * 100)).padStart(3, "0");
+          const customCode = `CUSTSPC${thickness.selected}-${codeLength}`;
+          const customPrice = catalogPrice(customCode, Math.round(RATES.channelLf * customLength * 100) / 100);
+          lines.push(makeLine(
+            customCode,
+            `${thickness.selected}" custom spacer channel - ${lengthLabel}'`,
+            quantity,
+            "EA",
+            customPrice.unitPrice,
+            thickness.reviewFlag,
+            customPrice.pricingSource,
+            customBasis
+          ));
+        });
+
+      if (!PRICING_CATALOG.part_count) {
+        lines.forEach((line) => {
+          line.reviewFlag = line.reviewFlag;
+        });
+      }
+
+      return {
+        selectedThicknessIn: thickness.selected,
+        channelPieceCount,
+        channelSpliceCount: Math.max(0, channelPieceCount - 4),
+        layout: {
+          leftCornerCode: parts.left,
+          rightCornerCode: parts.right,
+          cornerCodes: [parts.left, parts.right],
+          sidePlans,
+          customSpacers: [...customQtyByLength.entries()].map(([lengthFt, quantity]) => ({ lengthFt, quantity })),
+          spacerCodes: [...new Set(lines
+            .map((line) => line.code)
+            .filter((code) => /SPC/i.test(code) && !/^12SP/i.test(code)))]
+        },
+        lines
+      };
+    }
+
+    function perimeterBarLayers(thicknessIn) {
+      const total = Math.max(1, Math.round(Number(thicknessIn) || 0));
+      const topRuns = Math.floor(total / 2);
+      const bottomRuns = total - topRuns;
+      return {
+        topRuns,
+        bottomRuns,
+        totalPerimeterRuns: topRuns + bottomRuns
+      };
+    }
+
+    function gridBarPositions(spannedDimensionFt) {
+      const dimension = Number(spannedDimensionFt) || 0;
+      if (dimension <= THREAD_BAR_GRID_EDGE_OFFSET_FT * 2) {
+        return [Math.max(0, dimension / 2)];
+      }
+      const start = THREAD_BAR_GRID_EDGE_OFFSET_FT;
+      const end = dimension - THREAD_BAR_GRID_EDGE_OFFSET_FT;
+      const positions = [];
+      for (let value = start; value < end - 0.0001; value += THREAD_BAR_GRID_SPACING_FT) {
+        positions.push(Math.round(value * 100) / 100);
+      }
+      if (!positions.length || Math.abs(positions[positions.length - 1] - end) > 0.0001) {
+        positions.push(Math.round(end * 100) / 100);
+      }
+      return positions;
+    }
+
+    function stockedBarPlan(requiredLengthFt) {
+      const max19 = Math.ceil(requiredLengthFt / 19) + 2;
+      const max95 = Math.ceil(requiredLengthFt / 9.5) + 2;
+      let best = null;
+
+      for (let count19 = 0; count19 <= max19; count19 += 1) {
+        for (let count95 = 0; count95 <= max95; count95 += 1) {
+          const remaining = requiredLengthFt - (count19 * 19) - (count95 * 9.5);
+          const count475 = Math.max(0, Math.ceil((remaining - 0.0001) / 4.75));
+          const counts = {
+            "15FC19": count19,
+            "15FC10": count95,
+            "15FC5": count475
+          };
+          const pieceCount = count19 + count95 + count475;
+          if (!pieceCount) {
+            continue;
+          }
+          const suppliedLength = (count19 * 19) + (count95 * 9.5) + (count475 * 4.75);
+          if (suppliedLength + 0.0001 < requiredLengthFt) {
+            continue;
+          }
+          const candidate = {
+            counts,
+            pieceCount,
+            suppliedLengthFt: Math.round(suppliedLength * 100) / 100,
+            wasteLengthFt: Math.round((suppliedLength - requiredLengthFt) * 100) / 100,
+            splicesPerRun: Math.max(0, pieceCount - 1)
+          };
+          if (!best) {
+            best = candidate;
+            continue;
+          }
+          const candidateKey = [
+            candidate.wasteLengthFt,
+            candidate.pieceCount,
+            candidate.counts["15FC5"],
+            candidate.counts["15FC10"]
+          ];
+          const bestKey = [
+            best.wasteLengthFt,
+            best.pieceCount,
+            best.counts["15FC5"],
+            best.counts["15FC10"]
+          ];
+          if (candidateKey.some((value, index) => value < bestKey[index] && candidateKey.slice(0, index).every((prior, priorIndex) => prior === bestKey[priorIndex]))) {
+            best = candidate;
+          }
+        }
+      }
+
+      return best;
+    }
+
+    function buildThreadBarLogic(lengthFt, widthFt, slabThicknessIn, extraWidthRunCount = 0) {
+      const layers = perimeterBarLayers(slabThicknessIn);
+      const widthLayers = perimeterBarLayers(Math.max(1, layers.totalPerimeterRuns - 2));
+      const lengthPerimeterRuns = layers.totalPerimeterRuns * 2;
+      const widthPerimeterRuns = widthLayers.totalPerimeterRuns * 2;
+      const extraWidthRuns = Math.max(0, Math.round(Number(extraWidthRunCount) || 0));
+      const lengthGridPositions = gridBarPositions(widthFt);
+      const widthGridPositions = gridBarPositions(lengthFt);
+      const lengthGridRows = lengthGridPositions.length;
+      const widthGridRows = widthGridPositions.length;
+      const lengthRunCount = lengthPerimeterRuns + lengthGridRows;
+      const widthRunCount = widthPerimeterRuns + widthGridRows + extraWidthRuns;
+      const lengthRequiredFt = lengthFt + THREAD_BAR_EXTRA_LENGTH_FT;
+      const widthRequiredFt = widthFt + THREAD_BAR_EXTRA_LENGTH_FT;
+      const lengthPlan = stockedBarPlan(lengthRequiredFt);
+      const widthPlan = stockedBarPlan(widthRequiredFt);
+      const stockPieceTotals = Object.fromEntries(THREAD_BAR_STOCK_LENGTHS.map((item) => [item.code, 0]));
+
+      Object.entries(lengthPlan.counts).forEach(([code, count]) => {
+        stockPieceTotals[code] += count * lengthRunCount;
+      });
+      Object.entries(widthPlan.counts).forEach(([code, count]) => {
+        stockPieceTotals[code] += count * widthRunCount;
+      });
+
+      const totalBarRuns = lengthRunCount + widthRunCount;
+      const totalStockPieces = Object.values(stockPieceTotals).reduce((sum, count) => sum + count, 0);
+      const totalStockLengthFt = THREAD_BAR_STOCK_LENGTHS.reduce(
+        (sum, item) => sum + (stockPieceTotals[item.code] * item.lengthFt),
+        0
+      );
+      const connectorNuts = (lengthPlan.splicesPerRun * lengthRunCount) + (widthPlan.splicesPerRun * widthRunCount);
+      const rebarChairs = Math.ceil(totalStockLengthFt / REBAR_CHAIR_SPACING_FT);
+
+      return {
+        slabThicknessIn,
+        topPerimeterRuns: layers.topRuns,
+        bottomPerimeterRuns: layers.bottomRuns,
+        totalPerimeterRuns: layers.totalPerimeterRuns,
+        widthTopPerimeterRuns: widthLayers.topRuns,
+        widthBottomPerimeterRuns: widthLayers.bottomRuns,
+        widthTotalPerimeterRuns: widthLayers.totalPerimeterRuns,
+        lengthPerimeterRunCount: lengthPerimeterRuns,
+        widthPerimeterRunCount: widthPerimeterRuns,
+        gridSpacingFt: THREAD_BAR_GRID_SPACING_FT,
+        gridEdgeOffsetFt: THREAD_BAR_GRID_EDGE_OFFSET_FT,
+        lengthGridPositions,
+        widthGridPositions,
+        lengthGridRows,
+        widthGridRows,
+        lengthDirectionRunCount: lengthRunCount,
+        widthDirectionRunCount: widthRunCount,
+        extraWidthRunCount: extraWidthRuns,
+        totalBarRuns,
+        lengthRequiredFtPerRun: Math.round(lengthRequiredFt * 100) / 100,
+        widthRequiredFtPerRun: Math.round(widthRequiredFt * 100) / 100,
+        lengthStockPlanPerRun: lengthPlan,
+        widthStockPlanPerRun: widthPlan,
+        stockPieceTotals,
+        totalStockPieces,
+        totalStockLengthFt: Math.round(totalStockLengthFt * 100) / 100,
+        connectorNuts,
+        sasMetalNuts: (totalBarRuns * SAS_NUTS_PER_BAR_RUN) + SAS_NUT_SPARES,
+        sasNutSpares: SAS_NUT_SPARES,
+        rebarChairs,
+        wireTies: Math.ceil(rebarChairs * WIRE_TIES_PER_REBAR_CHAIR),
+        basis: `Length-side perimeter threaded bar count equals slab thickness. Width-side perimeter threaded bar count equals slab thickness minus 2 runs. Grid bars start and stop 2 ft 6 in from slab edges with maximum 5 ft spacing; the final grid bay may be shortened. Each bar run is at least 1 ft longer than the slab dimension and is segmented into 19 ft, 9.5 ft, and 4.75 ft stock lengths.${extraWidthRuns ? ` Thrust plate assemblies add ${extraWidthRuns} extra width-direction threaded bar run(s).` : ""}`
+      };
+    }
+
+    function lookupThickness(frameWidthFt, baySpacingFt, snowLoadPsf, overrideValue) {
+      const notes = [
+        "Preliminary only. PDF values are based on slab punching shear only for main column, 8 in x 10 in base plate, 8 in edge distance, assumed 10 psf unfactored roof dead load, and corner columns at 1/4 main column load or less."
+      ];
+      let reviewRequired = false;
+
+      const tableBay = roundUpChoice(baySpacingFt, BAY_TABLES_FT);
+      const tableWidth = frameWidthTableChoice(frameWidthFt, FRAME_ROWS_FT);
+      const tableSnow = roundUpChoice(snowLoadPsf, SNOW_COLUMNS_PSF);
+
+      if (tableBay === null) {
+        notes.push(`Bay spacing ${baySpacingFt} ft exceeds the 30 ft table limit.`);
+        reviewRequired = true;
+      } else if (tableBay !== baySpacingFt) {
+        notes.push(`Bay spacing rounded up from ${baySpacingFt} ft to ${tableBay} ft.`);
+      }
+
+      if (tableWidth === null) {
+        notes.push(`Frame width ${frameWidthFt} ft exceeds the 100 ft table limit.`);
+        reviewRequired = true;
+      } else if (tableWidth !== frameWidthFt) {
+        notes.push(`Frame width ${frameWidthFt} ft uses the ${tableWidth} ft table row per the 5 ft midpoint rule.`);
+      }
+
+      if (tableSnow === null) {
+        notes.push(`Snow load ${snowLoadPsf.toFixed(1)} psf exceeds the 73 psf table limit.`);
+        reviewRequired = true;
+      } else if (tableSnow !== snowLoadPsf) {
+        notes.push(`Snow load rounded up from ${snowLoadPsf.toFixed(1)} psf to ${tableSnow} psf.`);
+      }
+
+      let thickness = null;
+      if (tableBay && tableWidth && tableSnow) {
+        thickness = THICKNESS_TABLE[tableBay][tableWidth][SNOW_COLUMNS_PSF.indexOf(tableSnow)];
+        if (thickness === null) {
+          notes.push("The rounded table combination is blank in the PDF and requires engineering review.");
+          reviewRequired = true;
+        } else if (thickness >= 12) {
+          notes.push("Thickness is at the upper end of the table; engineering review is recommended.");
+        }
+      }
+
+      const tableThickness = thickness;
+      const override = overrideValue ? Number(overrideValue) : null;
+      if (override && Number.isFinite(override)) {
+        reviewRequired = true;
+        if (tableThickness && override < tableThickness) {
+          notes.push(`Thickness override ${override} in was not applied because it is less than the calculated ${tableThickness} in slab thickness.`);
+        } else {
+          thickness = override;
+          notes.push(`Thickness manually increased to ${override} in for this estimate.`);
+        }
+      }
+
+      return {
+        requestedBaySpacingFt: baySpacingFt,
+        tableBaySpacingFt: tableBay,
+        requestedFrameWidthFt: frameWidthFt,
+        tableFrameWidthFt: tableWidth,
+        requestedSnowLoadPsf: snowLoadPsf,
+        tableSnowLoadPsf: tableSnow,
+        calculatedThicknessIn: tableThickness,
+        preliminaryThicknessIn: thickness,
+        reviewRequired,
+        notes
+      };
+    }
+
+    function updateSlabOverrideOptions(calculatedThicknessIn) {
+      const select = byId("slabOverride");
+      if (!select.options) {
+        return;
+      }
+      const minimum = Number(calculatedThicknessIn) || 0;
+      Array.from(select.options).forEach((option) => {
+        if (!option.value) {
+          option.disabled = false;
+          return;
+        }
+        option.disabled = minimum > 0 && Number(option.value) < minimum;
+      });
+      if (select.value && minimum > 0 && Number(select.value) < minimum) {
+        select.value = "";
+      }
+    }
+
+    function makeLine(code, description, quantity, unit, unitPrice, reviewFlag = "", pricingSource = "Rule-based estimate", basis = "") {
+      const qty = Math.round(quantity * 100) / 100;
+      return {
+        code,
+        description,
+        quantity: qty,
+        unit,
+        unitPrice,
+        totalPrice: Math.round(qty * unitPrice * 100) / 100,
+        reviewFlag,
+        pricingSource,
+        basis
+      };
+    }
+
+    function calculateEstimate() {
+      const quoteNumber = ensureQuoteNumber();
+      const length = asNumber("lengthFt", 50);
+      const width = asNumber("frameWidthFt", 30);
+      const sidewallBaySpacings = parseSpacingList(byId("sidewallBaySpacings").value);
+      const endwallBaySpacings = parseSpacingList(byId("endwallBaySpacings").value);
+      const sidewallBayCountInput = Math.max(1, Math.round(asNumber("sidewallBayCount", countFromSpacingValues(sidewallBaySpacings, 1))));
+      const endwallBayCountInput = Math.max(1, Math.round(asNumber("endwallBayCount", countFromSpacingValues(endwallBaySpacings, 1))));
+      const fallbackBaySpacing = length / sidewallBayCountInput;
+      const baySpacing = spacingMax(sidewallBaySpacings, fallbackBaySpacing);
+      byId("baySpacingFt").value = baySpacing ? String(baySpacing) : "";
+      const snowInput = asNumber("snowLoad", 42);
+      const snowLoadPsf = byId("snowUnit").value === "kpa" ? snowInput * 20.885 : snowInput;
+      const freight = 0;
+      const taxRate = asNumber("taxRate", 0.13);
+      const markupRate = Math.max(0, asNumber("markupRate", DEFAULT_MARKUP_RATE * 100)) / 100;
+      const overheadInput = Math.max(0, asNumber("overheadCost", 1000));
+      const engineeringInput = Math.max(0, asNumber("engineeringFee", 1000));
+      const thrustPlateAssemblyCount = Math.max(0, Math.round(asNumber("thrustPlateAssemblyCount", 0)));
+      const thrustExtraWidthRuns = thrustPlateAssemblyCount * 2;
+      const override = byId("slabOverride").value;
+      const thickness = lookupThickness(width, baySpacing, snowLoadPsf, override);
+      updateSlabOverrideOptions(thickness.calculatedThicknessIn);
+      const bayCount = sidewallBayCountInput;
+      const adjustedBaySpacing = sidewallBaySpacings.length ? null : length / bayCount;
+      const sidewallColumnCount = Math.max(0, Math.round(asNumber("sidewallColumnCount", bayCount * 2 + 2)));
+      const endwallColumnCount = Math.max(0, Math.round(asNumber("endwallColumnCount", 4)));
+      const totalColumnCount = sidewallColumnCount + endwallColumnCount;
+      const area = length * width;
+      const perimeter = 2 * (length + width);
+      const concreteYards = thickness.preliminaryThicknessIn ? area * (thickness.preliminaryThicknessIn / 12) / 27 : null;
+      const documents = getProjectDocuments();
+      const pricingReleased = true;
+
+      const estimatedFlag = "MVP rule - validate against quote-form rules before customer issue";
+      const barThickness = thickness.preliminaryThicknessIn || 6;
+      const baseThreadBar = buildThreadBarLogic(length, width, barThickness, 0);
+      const threadBar = buildThreadBarLogic(length, width, barThickness, thrustExtraWidthRuns);
+      const anchors = totalColumnCount * 4;
+      const anchorTemplates = totalColumnCount;
+      const channelTakeoff = buildChannelLines(length, width, thickness.preliminaryThicknessIn || 6, estimatedFlag);
+      const selectedPartThickness = channelTakeoff.selectedThicknessIn;
+      const thrustPlatePart = `${Math.round(barThickness)}TPL`;
+      const thrustPlateCount = thrustPlateAssemblyCount * 2;
+      const thrustStockPieceTotals = Object.fromEntries(THREAD_BAR_STOCK_LENGTHS.map((item) => [
+        item.code,
+        Math.max(0, threadBar.stockPieceTotals[item.code] - baseThreadBar.stockPieceTotals[item.code])
+      ]));
+      const thrustStockLengthFt = THREAD_BAR_STOCK_LENGTHS.reduce(
+        (sum, item) => sum + (thrustStockPieceTotals[item.code] * item.lengthFt),
+        0
+      );
+      const splicePlates = channelTakeoff.channelSpliceCount;
+      const spliceScrews = splicePlates * SPLICE_SCREWS_PER_PLATE;
+      const splicePart = catalogItem(`12SP${selectedPartThickness}`) ? `12SP${selectedPartThickness}` : "12SP6";
+      const chairPart = REBAR_CHAIR_BY_THICKNESS[selectedPartThickness] || "RBC600";
+      const threadBarLines = THREAD_BAR_STOCK_LENGTHS
+        .filter((item) => threadBar.stockPieceTotals[item.code] > 0)
+        .map((item) => makeCatalogLine(
+          item.code,
+          item.description,
+          threadBar.stockPieceTotals[item.code],
+          "EA",
+          item.lengthFt * RATES.formBarLf,
+          "",
+          threadBar.basis
+        ));
+
+      const lines = [
+        ...threadBarLines,
+        makeCatalogLine("15CON", "15mm bar connector nuts", threadBar.connectorNuts, "EA", RATES.barConnectorEa, "", "One connector nut for every threaded bar splice."),
+        ...(thrustPlateCount > 0 ? [
+          makeCatalogLine(
+            thrustPlatePart,
+            `${Math.round(barThickness)}" hot rolled steel thrust plate`,
+            thrustPlateCount,
+            "EA",
+            RATES.thrustPlateEa,
+            "",
+            `Plates only: 2 hot rolled steel plates per thrust plate assembly x ${thrustPlateAssemblyCount} assembly(s). Added width-direction threaded bars and accessories are included in their standard material takeoff lines.`
+          )
+        ] : []),
+        ...channelTakeoff.lines,
+        makeCatalogLine("AB0500", "1/2 in anchor bolts c/w nuts and washers", anchors, "EA", RATES.anchorEa, estimatedFlag),
+        makeCatalogLine("15W30", "SAS metal nuts", threadBar.sasMetalNuts, "EA", RATES.sasNutEa, "", "4 SAS metal nuts per threaded bar run plus 2 spare nuts."),
+        makeCatalogLine(splicePart, `${selectedPartThickness}" splice plate - 12" long`, splicePlates, "EA", RATES.splicePlateEa, "", "One 12 in splice plate at every non-corner channel splice."),
+        makeCatalogLine("SPSCREW", "Self-drilling screws for splice plates", spliceScrews, "EA", RATES.spliceScrewEa, "", "8 self-drilling screws per splice plate."),
+        makeCatalogLine(chairPart, `${selectedPartThickness}" rebar chairs`, threadBar.rebarChairs, "EA", RATES.rebarChairEa, "", "One rebar chair per 10 ft of threaded bar stock length."),
+        makeCatalogLine("1RWT", "Rebar wire ties", threadBar.wireTies, "EA", RATES.wireTieEa, "", "Wire ties are 1.5x the calculated rebar chair count, rounded up."),
+        makeCatalogLine("ABT4", "Anchor bolt templates", anchorTemplates, "EA", RATES.anchorTemplateEa, estimatedFlag),
+        makeCatalogLine("CARE PKG", "Care package", 1, "EA", RATES.carePackageEa, "", "Every Econo-Slab project gets one care package."),
+        makeCatalogLine("CRATE", "Crate and bundle charge", 1, "EA", 1000, "", "Every Econo-Slab project gets one crating fee.")
+      ];
+
+      const materialSubtotal = lines.reduce((sum, item) => sum + item.totalPrice, 0);
+      const overhead = overheadInput;
+      const engineering = engineeringInput;
+      const markup = materialSubtotal * markupRate;
+      const packagePrice = materialSubtotal + overhead + engineering + freight + markup;
+      const tax = packagePrice * taxRate;
+      const total = packagePrice + tax;
+      const reviewFlags = [...new Set(lines.map((item) => displayReviewText(item.reviewFlag)).filter(Boolean))];
+      if (thickness.reviewRequired) {
+        reviewFlags.push("Thickness guidance requires engineering/admin review.");
+      }
+      if (sidewallBaySpacings.length && Math.abs(spacingSum(sidewallBaySpacings) - length) > 0.1) {
+        reviewFlags.push(`Sidewall bay spacings total ${formatNumber(spacingSum(sidewallBaySpacings))} ft, which does not match the ${formatNumber(length)} ft slab length.`);
+      }
+      if (endwallBaySpacings.length && Math.abs(spacingSum(endwallBaySpacings) - width) > 0.1) {
+        reviewFlags.push(`Endwall bay spacings total ${formatNumber(spacingSum(endwallBaySpacings))} ft, which does not match the ${formatNumber(width)} ft slab width.`);
+      }
+      if (sidewallBaySpacings.length && sidewallBaySpacings.length !== sidewallBayCountInput) {
+        reviewFlags.push(`Sidewall bay count is ${sidewallBayCountInput}, but ${sidewallBaySpacings.length} sidewall bay width value(s) were entered.`);
+      }
+      if (endwallBaySpacings.length && endwallBaySpacings.length !== endwallBayCountInput) {
+        reviewFlags.push(`Endwall bay count is ${endwallBayCountInput}, but ${endwallBaySpacings.length} endwall bay width value(s) were entered.`);
+      }
+      if (totalColumnCount <= 0) {
+        reviewFlags.push("Sidewall and endwall column totals are required for anchor bolt and template quantities.");
+      }
+
+      return {
+        createdAt: new Date().toISOString(),
+        customer: {
+          name: byId("customerName").value,
+          contactName: byId("contactName").value,
+          email: byId("email").value,
+          phone: byId("phone").value
+        },
+        project: {
+          name: byId("projectName").value,
+          siteAddress: byId("siteAddress").value,
+          quoteNumber,
+          freightMethod: "By Customer",
+          paymentTerms: byId("paymentTerms").value,
+          notes: byId("notes").value,
+          documents
+        },
+        status: thickness.reviewRequired ? "needs_engineering" : "needs_pricing_review",
+        pricingReleased,
+        geometry: {
+          dimensions: `${width} ft W x ${length} ft L`,
+          length,
+          width,
+          area,
+          perimeter,
+          baySpacing,
+          designBaySpacing: baySpacing,
+          sidewallBayCount: sidewallBayCountInput,
+          endwallBayCount: endwallBayCountInput,
+          sidewallBaySpacings,
+          endwallBaySpacings,
+          bayCount,
+          adjustedBaySpacing,
+          sidewallColumnCount,
+          endwallColumnCount,
+          totalColumnCount,
+          concreteYards
+        },
+        thrustPlateAssemblies: {
+          count: thrustPlateAssemblyCount,
+          platePart: thrustPlateCount > 0 ? thrustPlatePart : "",
+          plateCount: thrustPlateCount,
+          extraWidthRunCount: thrustExtraWidthRuns,
+          addedThreadBarStock: thrustStockPieceTotals,
+          addedThreadBarLengthFt: Math.round(thrustStockLengthFt * 100) / 100,
+          addedConnectorNuts: Math.max(0, threadBar.connectorNuts - baseThreadBar.connectorNuts),
+          addedSasMetalNuts: Math.max(0, threadBar.sasMetalNuts - baseThreadBar.sasMetalNuts),
+          addedRebarChairs: Math.max(0, threadBar.rebarChairs - baseThreadBar.rebarChairs),
+          addedWireTies: Math.max(0, threadBar.wireTies - baseThreadBar.wireTies),
+          accessoryLineCodes: {
+            threadedBar: THREAD_BAR_STOCK_LENGTHS.map((item) => item.code),
+            connectorNuts: "15CON",
+            sasMetalNuts: "15W30",
+            rebarChairs: chairPart,
+            wireTies: "1RWT"
+          }
+        },
+        pricingCatalog: {
+          loaded: Boolean(PRICING_CATALOG.part_count),
+          partCount: PRICING_CATALOG.part_count || 0,
+          sourceWorkbook: PRICING_CATALOG.source_workbook || ""
+        },
+        snowLoadPsf,
+        thickness,
+        threadBarLogic: {
+          ...threadBar,
+          channelSpliceCount: channelTakeoff.channelSpliceCount,
+          spliceScrewsPerPlate: SPLICE_SCREWS_PER_PLATE
+        },
+        channelLayout: channelTakeoff.layout,
+        lines,
+        totals: {
+          materialSubtotal,
+          overhead,
+          engineering,
+          freight,
+          markupRate,
+          markup,
+          packagePrice,
+          taxRate,
+          tax,
+          total
+        },
+        reviewFlags
+      };
+    }
+
+    function metric(label, value) {
+      return `<div class="metric"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`;
+    }
+
+    function displayReviewText(value) {
+      const text = String(value || "");
+      if (/master pricing catalog|MVP fallback pricing|no sell price|not in .*catalog|catalog did not load/i.test(text)) {
+        return "";
+      }
+      return text;
+    }
+
+    function materialNote(item) {
+      const quantity = item.quantity.toLocaleString("en-CA", { maximumFractionDigits: 2 });
+      const basis = item.basis || item.pricingSource || "Calculated from current MVP takeoff rules.";
+      const reviewFlag = displayReviewText(item.reviewFlag);
+      const review = reviewFlag ? ` Review: ${reviewFlag}` : "";
+      return `${item.code} - ${item.description}: ${quantity} ${item.unit}. ${basis}${review}`;
+    }
+
+    function buildEstimatingNotes(estimate) {
+      const thickness = estimate.thickness;
+      const concrete = estimate.geometry.concreteYards === null
+        ? "engineering review required"
+        : `${formatNumber(estimate.geometry.concreteYards, 2)} yd3`;
+      const notes = [
+        `Slab thickness: ${thickness.preliminaryThicknessIn || "review"} in from width ${formatNumber(estimate.geometry.width)} ft, sidewall design bay ${formatNumber(estimate.geometry.designBaySpacing)} ft, and snow load ${formatNumber(estimate.snowLoadPsf, 1)} psf. Table inputs used: width ${thickness.tableFrameWidthFt || "n/a"} ft, bay ${thickness.tableBaySpacingFt || "n/a"} ft, snow ${thickness.tableSnowLoadPsf || "n/a"} psf.`,
+        `Concrete volume: ${formatNumber(estimate.geometry.width)} ft x ${formatNumber(estimate.geometry.length)} ft x ${thickness.preliminaryThicknessIn || 0} in divided by 27 = ${concrete}.`
+      ];
+      buildThrustAssemblyNotes(estimate).forEach((note) => notes.push(`Thrust plate assembly: ${note}`));
+      estimate.lines.forEach((item) => notes.push(materialNote(item)));
+      notes.push(`Markup: ${formatPercent(estimate.totals.markupRate)} x material subtotal ${money(estimate.totals.materialSubtotal)} = ${money(estimate.totals.markup)}.`);
+      notes.push(`Quote total: material subtotal + overhead ${money(estimate.totals.overhead)} + engineering ${money(estimate.totals.engineering)} + freight ${money(estimate.totals.freight)} + markup, plus ${formatPercent(estimate.totals.taxRate)} tax.`);
+      estimate.reviewFlags.map(displayReviewText).filter(Boolean).forEach((flag) => notes.push(`Review item: ${flag}`));
+      return notes;
+    }
+
+    function buildThrustAssemblyNotes(estimate) {
+      const thrust = estimate.thrustPlateAssemblies;
+      if (!thrust?.count) {
+        return ["No thrust plate assemblies are included in this estimate."];
+      }
+      const addedStock = Object.entries(thrust.addedThreadBarStock || {})
+        .filter(([, quantity]) => quantity > 0)
+        .map(([code, quantity]) => `${quantity} ${code}`)
+        .join(", ") || "no additional stock pieces";
+      return [
+        `${thrust.count} assembly(s) require ${thrust.plateCount} ${thrust.platePart} hot rolled steel plate(s), carried on the thrust plate line only.`,
+        `${thrust.extraWidthRunCount} extra width-direction threaded bar run(s) are included in the standard threaded bar lines ${thrust.accessoryLineCodes.threadedBar.join(", ")}; added bar stock is ${addedStock}.`,
+        `${thrust.addedSasMetalNuts} added SAS metal nut(s) are included in ${thrust.accessoryLineCodes.sasMetalNuts}.`,
+        `${thrust.addedConnectorNuts} added connector nut(s) are included in ${thrust.accessoryLineCodes.connectorNuts}.`,
+        `${thrust.addedRebarChairs} added rebar chair(s) are included in ${thrust.accessoryLineCodes.rebarChairs}.`,
+        `${thrust.addedWireTies} added rebar wire tie(s) are included in ${thrust.accessoryLineCodes.wireTies}.`,
+        "The thrust plate assembly is not priced as a separate bundled kit; each required material is priced in its normal product category using the current master unit pricing."
+      ];
+    }
+
+    function buildCustomerNotes(estimate) {
+      const notes = [];
+      noteLines(estimate.project.notes).forEach((item) => notes.push(item));
+      estimate.thickness.notes.forEach((item) => notes.push(item));
+      if (estimate.thrustPlateAssemblies?.count) {
+        notes.push("Thrust plate assembly material is included in this price. Required plates, width-direction threaded bars, SAS nuts, connector nuts, rebar chairs, and wire ties are included in the package under their normal material categories.");
+      }
+      if (estimate.thickness.reviewRequired) {
+        notes.push("Engineering/admin review is required before this can become a final released quote.");
+      }
+      return notes;
+    }
+
+    function downloadFile(filename, content, type = "text/html") {
+      const blob = new Blob([content], { type });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function orderPackageFilename(estimate) {
+      const quote = estimate.project.quoteNumber || "econo-slab-order";
+      return `${quote}_Order_Package.html`;
+    }
+
+    function orderDocumentRows(estimate, attachedFiles = []) {
+      const docs = estimate.project.documents || [];
+      if (!docs.length) {
+        return `<tr><td colspan="5">No customer-uploaded files were selected in the browser quote.</td></tr>`;
+      }
+      return docs.map((doc) => {
+        const embedded = attachedFiles.find((file) => file.name === doc.name && Number(file.size) === Number(doc.size));
+        const link = embedded?.embedded && embedded.dataUrl
+          ? `<a href="${esc(embedded.dataUrl)}" download="${esc(embedded.name)}">Download embedded file</a>`
+          : "Listed for manual email attachment";
+        return `
+          <tr>
+            <td>${esc(doc.name)}</td>
+            <td>${esc(doc.type || "Unknown")}</td>
+            <td>${esc(formatFileSize(doc.size))}</td>
+            <td>${embedded?.embedded ? "Embedded in this package" : "Not embedded"}</td>
+            <td>${link}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function internalMaterialRows(estimate, includeInternalTakeoff) {
+      if (!includeInternalTakeoff) {
+        return `<tr><td colspan="7">Internal material takeoff intentionally omitted from this customer-safe package. In production, the server-side order workflow should attach the internal takeoff directly to the Econo-Slab order email without exposing it to the customer or builder.</td></tr>`;
+      }
+      return estimate.lines.map((item) => `
+        <tr>
+          <td>${esc(item.code)}</td>
+          <td>${esc(item.description)}</td>
+          <td class="num">${item.quantity.toLocaleString("en-CA", { maximumFractionDigits: 2 })}</td>
+          <td>${esc(item.unit)}</td>
+          <td class="num">${money(item.unitPrice)}</td>
+          <td class="num">${money(item.totalPrice)}</td>
+          <td>${esc(displayReviewText(item.reviewFlag) || item.basis || item.pricingSource)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function buildOrderPackageHtml(estimate, orderEvent, options = {}) {
+      const attachedFiles = options.attachedFiles || [];
+      const includeInternalTakeoff = options.includeInternalTakeoff === true;
+      const drawing = renderDrawing(estimate);
+      const customerNotes = buildCustomerNotes(estimate).map((note) => `<li>${esc(note)}</li>`).join("");
+      const estimatingNotes = buildEstimatingNotes(estimate).map((note) => `<li>${esc(note)}</li>`).join("");
+      const submittedAt = orderEvent?.createdAt ? new Date(orderEvent.createdAt) : new Date();
+      return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${esc(estimate.project.quoteNumber)} Order Package</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #172033; margin: 0; background: #f7fafc; }
+    main { max-width: 1120px; margin: 24px auto; background: #fff; border: 1px solid #d9e0e8; }
+    header, section { padding: 22px 28px; border-bottom: 1px solid #d9e0e8; }
+    h1, h2 { margin: 0 0 10px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .metric { border: 1px solid #d9e0e8; padding: 10px; background: #f4f7f9; }
+    .metric span { display: block; color: #627086; font-size: 12px; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 4px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid #d9e0e8; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f4f7f9; }
+    .num { text-align: right; white-space: nowrap; }
+    .notice { background: #fff8df; border: 1px solid #e2c979; padding: 10px 12px; margin-top: 12px; }
+    .sensitive { background: #fff0f0; border-color: #dfa6a6; }
+    svg { width: 100%; height: auto; border: 1px solid #d9e0e8; background: #f7fafc; }
+    @media print { body { background: #fff; } main { margin: 0; border: 0; } section { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Econo-Slab Order Acknowledgement</h1>
+      <p><strong>Order submitted:</strong> ${esc(submittedAt.toLocaleString("en-CA"))}</p>
+      <p>This document acknowledges that the customer has requested to proceed with the project based on the current quote. Final release remains subject to Econo-Slab review, approval, and any required engineering confirmation.</p>
+      <div class="notice ${includeInternalTakeoff ? "sensitive" : ""}">
+        ${includeInternalTakeoff
+          ? "Internal material takeoff, quantities, unit pricing, and estimating notes are included because this package was generated from unlocked Econo-Slab Internal mode."
+          : "This package is customer-safe. Internal material takeoff is not included because Econo-Slab Internal mode was not unlocked."}
+      </div>
+    </header>
+    <section>
+      <h2>Customer Quote Information</h2>
+      <div class="grid">
+        ${metric("Quote", estimate.project.quoteNumber)}
+        ${metric("Customer", estimate.customer.name)}
+        ${metric("Contact", estimate.customer.contactName)}
+        ${metric("Customer Email", estimate.customer.email)}
+        ${metric("Phone", estimate.customer.phone)}
+        ${metric("Project", estimate.project.name)}
+        ${metric("Site", estimate.project.siteAddress)}
+        ${metric("Dimensions", `${estimate.geometry.width} ft W x ${estimate.geometry.length} ft L`)}
+        ${metric("Design Bay", `${estimate.geometry.designBaySpacing} ft`)}
+        ${metric("Snow Load", `${estimate.snowLoadPsf.toFixed(1)} psf`)}
+        ${metric("Slab Guidance", `${estimate.thickness.preliminaryThicknessIn || "Review"} in`)}
+        ${metric("Columns", estimate.geometry.totalColumnCount)}
+        ${metric("Quote Total", money(estimate.totals.total))}
+      </div>
+    </section>
+    <section>
+      <h2>Preliminary Drawing</h2>
+      ${drawing}
+    </section>
+    <section>
+      <h2>Quote Summary</h2>
+      <table>
+        <thead><tr><th>Item</th><th class="num">Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Package Price</td><td class="num">${money(estimate.totals.packagePrice)}</td></tr>
+          <tr><td>Tax</td><td class="num">${money(estimate.totals.tax)}</td></tr>
+          <tr><td>Total</td><td class="num">${money(estimate.totals.total)}</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Uploaded Customer Files</h2>
+      <table>
+        <thead><tr><th>File</th><th>Type</th><th>Size</th><th>Status</th><th>Package Link</th></tr></thead>
+        <tbody>${orderDocumentRows(estimate, attachedFiles)}</tbody>
+      </table>
+      <p class="notice">Email clients launched from a browser do not allow this prototype to attach files automatically. Attach this generated order package to the email. If the original customer drawings/documents are not embedded above, attach those original files separately as well.</p>
+    </section>
+    <section>
+      <h2>Customer Notes</h2>
+      <ul>${customerNotes}</ul>
+    </section>
+    <section>
+      <h2>Internal Material Takeoff</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th class="num">Qty</th>
+            <th>Unit</th>
+            <th class="num">Unit Price</th>
+            <th class="num">Total</th>
+            <th>Basis / Review</th>
+          </tr>
+        </thead>
+        <tbody>${internalMaterialRows(estimate, includeInternalTakeoff)}</tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Estimating Notes</h2>
+      <ul>${includeInternalTakeoff ? estimatingNotes : "<li>Internal estimating notes omitted from customer-safe package.</li>"}</ul>
+    </section>
+  </main>
+</body>
+</html>`;
+    }
+
+    function buildOrderEmailBody(estimate, filename, options = {}) {
+      const includeInternalTakeoff = options.includeInternalTakeoff === true;
+      const embeddedCount = Number(options.embeddedDocumentCount) || 0;
+      const docs = estimate.project.documents.length
+        ? estimate.project.documents.map((doc) => `- ${doc.name}`).join("\r\n")
+        : "- No additional uploaded documents were listed in the browser quote.";
+      return [
+        "Please process this Econo-Slab order request.",
+        "",
+        `Quote: ${estimate.project.quoteNumber}`,
+        `Customer: ${estimate.customer.name}`,
+        `Contact: ${estimate.customer.contactName}`,
+        `Email: ${estimate.customer.email}`,
+        `Phone: ${estimate.customer.phone}`,
+        `Project: ${estimate.project.name}`,
+        `Site: ${estimate.project.siteAddress}`,
+        `Dimensions: ${estimate.geometry.width} ft W x ${estimate.geometry.length} ft L`,
+        `Total: ${money(estimate.totals.total)}`,
+        "",
+        "Required email attachments:",
+        `- ${filename} (${includeInternalTakeoff ? "customer quote information, internal material takeoff, and order acknowledgement" : "customer quote information and order acknowledgement"})`,
+        estimate.project.documents.length
+          ? `- Customer uploaded drawing/document files listed below${embeddedCount ? ` (${embeddedCount} embedded in the generated order package)` : ""}`
+          : "- No customer uploaded drawing/document files were selected",
+        "",
+        "Uploaded/listed documents:",
+        docs,
+        "",
+        includeInternalTakeoff
+          ? "Internal material takeoff is included in the generated order package because this order was prepared from unlocked Econo-Slab Internal mode."
+          : "Internal material takeoff is not included in this customer-safe local package. In production, server-side order submission should attach the internal takeoff directly to this Econo-Slab email without exposing it to the customer or builder.",
+        "",
+        "Note: this local test version prepares the order package and email. Browser mail links cannot attach files automatically, so attach the downloaded order package and any original customer files before sending."
+      ].join("\r\n");
+    }
+
+    function openOrderEmail(estimate, filename, options = {}) {
+      const subject = encodeURIComponent(`Econo-Slab Order Request - ${estimate.project.quoteNumber}`);
+      const body = encodeURIComponent(buildOrderEmailBody(estimate, filename, options));
+      const mailto = `mailto:${ORDER_EMAIL_RECIPIENTS.join(",")}?subject=${subject}&body=${body}`;
+      if (window.location) {
+        window.location.href = mailto;
+      }
+      return mailto;
+    }
+
+    function summarizeKpiEvents(events) {
+      const quotes = events.filter((event) => event.type === "quote");
+      const orders = events.filter((event) => event.type === "order");
+      const quoteValue = quotes.reduce((sum, event) => sum + (event.value || 0), 0);
+      const orderValue = orders.reduce((sum, event) => sum + (event.value || 0), 0);
+      return {
+        quotes,
+        orders,
+        quoteCount: quotes.length,
+        orderCount: orders.length,
+        quoteValue,
+        orderValue,
+        averageQuoteValue: quotes.length ? quoteValue / quotes.length : 0,
+        averageOrderValue: orders.length ? orderValue / orders.length : 0,
+        closeRate: quotes.length ? orders.length / quotes.length : 0
+      };
+    }
+
+    function gaugeCard(label, value, fillRatio, displayValue = value) {
+      const degrees = Math.max(0, Math.min(1, fillRatio || 0)) * 360;
+      return `
+        <div class="gauge-card">
+          <div class="gauge" style="--fill:${degrees.toFixed(1)}deg"><div class="gauge-value">${esc(displayValue)}</div></div>
+          <span>${esc(label)}</span>
+        </div>
+      `;
+    }
+
+    function groupedUserStats(events) {
+      const byUser = new Map();
+      events.forEach((event) => {
+        const key = event.userKey || quoteUserKey(event.user);
+        if (!byUser.has(key)) {
+          byUser.set(key, { user: event.user || "Unknown User", events: [] });
+        }
+        byUser.get(key).events.push(event);
+      });
+      return [...byUser.values()]
+        .map((item) => ({ user: item.user, ...summarizeKpiEvents(item.events) }))
+        .sort((a, b) => b.quoteValue + b.orderValue - (a.quoteValue + a.orderValue));
+    }
+
+    function renderDashboard() {
+      const gauges = byId("dashboardGauges");
+      const rows = byId("dashboardUserRows");
+      if (!gauges || !rows) {
+        return;
+      }
+      const events = loadKpiEvents();
+      const summary = summarizeKpiEvents(events);
+      const userStats = groupedUserStats(events);
+      const maxCount = Math.max(1, summary.quoteCount, summary.orderCount);
+      const maxValue = Math.max(1, summary.quoteValue, summary.orderValue, summary.averageQuoteValue, summary.averageOrderValue);
+
+      gauges.innerHTML = [
+        gaugeCard("Total Quotes", summary.quoteCount, summary.quoteCount / maxCount, String(summary.quoteCount)),
+        gaugeCard("Quote Value", money(summary.quoteValue), summary.quoteValue / maxValue, money(summary.quoteValue)),
+        gaugeCard("Total Orders", summary.orderCount, summary.orderCount / maxCount, String(summary.orderCount)),
+        gaugeCard("Order Value", money(summary.orderValue), summary.orderValue / maxValue, money(summary.orderValue)),
+        gaugeCard("Close Rate", formatPercent(summary.closeRate), summary.closeRate, formatPercent(summary.closeRate))
+      ].join("");
+
+      rows.innerHTML = userStats.length ? userStats.map((item) => `
+        <tr>
+          <td>${esc(item.user)}</td>
+          <td class="num">${item.quoteCount}</td>
+          <td class="num">${money(item.quoteValue)}</td>
+          <td class="num">${money(item.averageQuoteValue)}</td>
+          <td class="num">${item.orderCount}</td>
+          <td class="num">${money(item.orderValue)}</td>
+          <td class="num">${money(item.averageOrderValue)}</td>
+          <td class="num">${formatPercent(item.closeRate)}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="8">No quote or order activity has been recorded yet. Click Calculate Quote to record a quote, or Order Project to record an order.</td></tr>`;
+
+      byId("dashboardStatus").textContent = `${summary.quoteCount} quote(s), ${summary.orderCount} order(s)`;
+    }
+
+    function priceSourceLabel(item, hasOverride) {
+      if (hasOverride) {
+        return "Override";
+      }
+      if (!item) {
+        return "Rule";
+      }
+      if (item.source_type === "takeoff") {
+        return "Current takeoff";
+      }
+      return item.source_type === "local" ? "Local default" : `Quote Form row ${item.source_row || ""}`.trim();
+    }
+
+    function currentTakeoffCatalogItems(estimate = state.estimate) {
+      const knownItems = catalogItems();
+      const items = {};
+      (estimate?.lines || []).forEach((line) => {
+        if (knownItems[line.code]) {
+          return;
+        }
+        items[line.code] = {
+          part: line.code,
+          description: line.description,
+          price_26ga_col_or_each: line.unitPrice,
+          unit: line.unit,
+          source_type: "takeoff"
+        };
+      });
+      return items;
+    }
+
+    function allPriceListRows(estimate = state.estimate) {
+      return Object.entries(catalogItems(currentTakeoffCatalogItems(estimate)))
+        .map(([code, item]) => ({
+          code,
+          item,
+          description: item?.description || code,
+          unit: item?.unit || "EA",
+          basePrice: baseUnitPrice(item)
+        }))
+        .sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+    }
+
+    function renderMasterPriceList(estimate = state.estimate) {
+      const tableBody = byId("masterPriceListRows");
+      if (!tableBody) {
+        return;
+      }
+      const search = String(byId("priceListSearch").value || "").trim().toLowerCase();
+      const currentCodes = new Set((estimate?.lines || []).map((line) => line.code));
+      const allRows = allPriceListRows(estimate);
+      const rows = (search
+        ? allRows.filter((row) => row.code.toLowerCase().includes(search) || String(row.description || "").toLowerCase().includes(search))
+        : allRows
+      ).sort((a, b) => Number(currentCodes.has(b.code)) - Number(currentCodes.has(a.code)) || a.code.localeCompare(b.code, undefined, { numeric: true }));
+
+      byId("priceListStatus").textContent = `${rows.length} / ${allRows.length}`;
+      tableBody.innerHTML = rows.map((row) => {
+        const override = priceOverride(row.code);
+        const masterPrice = override !== null ? override : (row.basePrice ?? 0);
+        return `
+          <tr>
+            <td>${esc(row.code)}</td>
+            <td>${esc(row.description)}</td>
+            <td>${esc(row.unit)}</td>
+            <td class="num">${money(row.basePrice || 0)}</td>
+            <td class="num"><input class="master-price-input" data-code="${esc(row.code)}" type="number" min="0" step="0.01" value="${masterPrice}"></td>
+            <td>${esc(priceSourceLabel(row.item, override !== null))}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderDrawing(estimate) {
+      const {
+        length,
+        width,
+        bayCount,
+        adjustedBaySpacing,
+        sidewallBaySpacings,
+        endwallBaySpacings,
+        sidewallColumnCount,
+        endwallColumnCount
+      } = estimate.geometry;
+      const thickness = estimate.thickness.preliminaryThicknessIn;
+      const threadBar = estimate.threadBarLogic;
+      const svgW = 900;
+      const svgH = 520;
+      const pad = 90;
+      const usableW = svgW - pad * 2;
+      const usableH = svgH - pad * 2;
+      let planW;
+      let planH;
+      if (length >= width) {
+        planW = usableW;
+        planH = Math.max(120, usableW * width / length);
+        if (planH > usableH) {
+          planH = usableH;
+          planW = usableH * length / width;
+        }
+      } else {
+        planH = usableH;
+        planW = Math.max(120, usableH * length / width);
+        if (planW > usableW) {
+          planW = usableW;
+          planH = usableW * width / length;
+        }
+      }
+      const x0 = (svgW - planW) / 2;
+      const y0 = (svgH - planH) / 2;
+      const x1 = x0 + planW;
+      const y1 = y0 + planH;
+      const xAt = (value) => x0 + (planW * value / length);
+      const yAt = (value) => y0 + (planH * value / width);
+      const distributedPositions = (count, total) => {
+        if (count <= 1) {
+          return [0];
+        }
+        return Array.from({ length: count }, (_, index) => total * index / (count - 1));
+      };
+      const sidewallPositions = sidewallBaySpacings.length
+        ? spacingPositions(sidewallBaySpacings, length)
+        : distributedPositions(bayCount + 1, length);
+      const endwallPositions = endwallBaySpacings.length
+        ? spacingPositions(endwallBaySpacings, width)
+        : [0, width];
+      const sidewallPerSide = Math.max(1, Math.round(sidewallColumnCount / 2));
+      const endwallPerSide = Math.max(1, Math.round(endwallColumnCount / 2));
+      const sidewallColumnPositions = sidewallPositions.length === sidewallPerSide
+        ? sidewallPositions
+        : distributedPositions(sidewallPerSide, length);
+      const endwallColumnPositions = endwallPositions.length === endwallPerSide
+        ? endwallPositions
+        : distributedPositions(endwallPerSide, width);
+
+      const bayLines = sidewallPositions
+        .filter((value) => value > 0 && value < length)
+        .map((value) => {
+          const x = xAt(value);
+          return `<line x1="${x.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y1.toFixed(1)}" class="bay"/>`;
+        });
+      const endwallBayLines = endwallPositions
+        .filter((value) => value > 0 && value < width)
+        .map((value) => {
+          const y = yAt(value);
+          return `<line x1="${x0.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y.toFixed(1)}" class="endbay"/>`;
+        });
+
+      const horizontalGridRows = threadBar?.lengthGridPositions || gridBarPositions(width);
+      const verticalGridRows = threadBar?.widthGridPositions || gridBarPositions(length);
+      const gridBars = [];
+      horizontalGridRows.forEach((value) => {
+        const y = yAt(value);
+        gridBars.push(`<line x1="${x0.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y.toFixed(1)}" class="bar-grid"/>`);
+      });
+      verticalGridRows.forEach((value) => {
+        const x = xAt(value);
+        gridBars.push(`<line x1="${x.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y1.toFixed(1)}" class="bar-grid"/>`);
+      });
+
+      const columns = [];
+      sidewallColumnPositions.forEach((value) => {
+        const x = xAt(Math.min(length, Math.max(0, value)));
+        columns.push(`<circle class="column-center" cx="${x.toFixed(1)}" cy="${y0.toFixed(1)}" r="2.2"/>`);
+        columns.push(`<circle class="column-center" cx="${x.toFixed(1)}" cy="${y1.toFixed(1)}" r="2.2"/>`);
+      });
+      endwallColumnPositions.forEach((value) => {
+        const y = yAt(Math.min(width, Math.max(0, value)));
+        columns.push(`<circle class="column-center" cx="${x0.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2"/>`);
+        columns.push(`<circle class="column-center" cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2"/>`);
+      });
+
+      const feetInchLabel = (value) => {
+        const totalInches = Math.max(0, Math.round(Number(value) * 12));
+        const feet = Math.floor(totalInches / 12);
+        const inches = totalInches % 12;
+        return `${feet}' - ${inches}"`;
+      };
+      const spliceDistances = (plan, visibleLength) => {
+        const counts = plan?.counts || {};
+        const segments = [];
+        THREAD_BAR_STOCK_LENGTHS.forEach((item) => {
+          for (let index = 0; index < (counts[item.code] || 0); index += 1) {
+            segments.push(item.lengthFt);
+          }
+        });
+        let running = 0;
+        return segments.slice(0, -1)
+          .map((segment) => {
+            running += segment;
+            return running;
+          })
+          .filter((distance) => distance > 0.01 && distance < visibleLength - 0.01);
+      };
+      const lengthSplices = spliceDistances(threadBar?.lengthStockPlanPerRun, length);
+      const widthSplices = spliceDistances(threadBar?.widthStockPlanPerRun, width);
+      const barSpliceMarkers = [];
+      horizontalGridRows.forEach((row) => {
+        const y = yAt(row);
+        lengthSplices.forEach((distance) => {
+          const x = xAt(distance);
+          barSpliceMarkers.push(`<rect class="bar-splice" x="${(x - 5).toFixed(1)}" y="${(y - 2).toFixed(1)}" width="10" height="4" rx="1"/>`);
+        });
+      });
+      verticalGridRows.forEach((row) => {
+        const x = xAt(row);
+        widthSplices.forEach((distance) => {
+          const y = yAt(distance);
+          barSpliceMarkers.push(`<rect class="bar-splice" x="${(x - 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" width="4" height="10" rx="1"/>`);
+        });
+      });
+
+      const channelLayout = estimate.channelLayout || {};
+      const spacerLabel = (channelLayout.spacerCodes || []).join(" / ");
+      const leftCornerCode = channelLayout.leftCornerCode || channelLayout.cornerCodes?.[0] || "";
+      const rightCornerCode = channelLayout.rightCornerCode || channelLayout.cornerCodes?.[1] || "";
+      const channelLabels = [];
+      if (spacerLabel) {
+        channelLabels.push(`<text class="channel-label" x="${((x0 + x1) / 2).toFixed(1)}" y="${(y0 - 12).toFixed(1)}" text-anchor="middle">${esc(spacerLabel)}</text>`);
+        channelLabels.push(`<text class="channel-label" x="${((x0 + x1) / 2).toFixed(1)}" y="${(y1 + 20).toFixed(1)}" text-anchor="middle">${esc(spacerLabel)}</text>`);
+        channelLabels.push(`<text class="channel-label" x="${(x0 - 14).toFixed(1)}" y="${((y0 + y1) / 2).toFixed(1)}" transform="rotate(-90 ${(x0 - 14).toFixed(1)} ${((y0 + y1) / 2).toFixed(1)})" text-anchor="middle">${esc(spacerLabel)}</text>`);
+        channelLabels.push(`<text class="channel-label" x="${(x1 + 14).toFixed(1)}" y="${((y0 + y1) / 2).toFixed(1)}" transform="rotate(90 ${(x1 + 14).toFixed(1)} ${((y0 + y1) / 2).toFixed(1)})" text-anchor="middle">${esc(spacerLabel)}</text>`);
+      }
+      if (leftCornerCode && rightCornerCode) {
+        const cornerLegX = Math.min(5, Math.max(1, length * 0.2));
+        const cornerLegY = Math.min(5, Math.max(1, width * 0.2));
+        const cornerSpecs = [
+          { code: leftCornerCode, x: xAt(cornerLegX), y: y0 - 30, anchor: "middle" },
+          { code: rightCornerCode, x: x0 - 30, y: yAt(cornerLegY), rotate: -90, anchor: "middle" },
+          { code: leftCornerCode, x: xAt(length - cornerLegX), y: y0 - 30, anchor: "middle" },
+          { code: rightCornerCode, x: x1 + 30, y: yAt(cornerLegY), rotate: 90, anchor: "middle" },
+          { code: leftCornerCode, x: xAt(cornerLegX), y: y1 + 38, anchor: "middle" },
+          { code: rightCornerCode, x: x0 - 30, y: yAt(width - cornerLegY), rotate: -90, anchor: "middle" },
+          { code: leftCornerCode, x: xAt(length - cornerLegX), y: y1 + 38, anchor: "middle" },
+          { code: rightCornerCode, x: x1 + 30, y: yAt(width - cornerLegY), rotate: 90, anchor: "middle" }
+        ];
+        cornerSpecs.forEach((item) => {
+          const rotation = item.rotate ? ` transform="rotate(${item.rotate} ${item.x.toFixed(1)} ${item.y.toFixed(1)})"` : "";
+          channelLabels.push(`<text class="channel-label corner ${item.code === leftCornerCode ? "corner-left" : "corner-right"}" x="${item.x.toFixed(1)}" y="${item.y.toFixed(1)}"${rotation} text-anchor="${item.anchor}">${esc(item.code)}</text>`);
+        });
+      }
+      channelLabels.length = 0;
+
+      const thicknessText = thickness ? `${thickness} inch preliminary slab` : "engineering review required";
+      const bayText = sidewallBaySpacings.length
+        ? `sidewall bays ${sidewallBaySpacings.map((value) => `${formatNumber(value)}'`).join(" / ")}`
+        : `${bayCount} bay(s), approx. ${adjustedBaySpacing?.toFixed(2) || ""} ft spacing`;
+      return `<svg id="drawingSvg" xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" role="img" aria-label="Preliminary Econo-Slab plan view">
+        <style>
+          .bg{fill:#fff}.slab{fill:#f7f9fb;stroke:#111827;stroke-width:3}.bay{stroke:#c62828;stroke-width:2;stroke-dasharray:9 8}.endbay{stroke:#c62828;stroke-width:1.8;stroke-dasharray:6 7}.bar-grid{stroke:#466b55;stroke-width:1;opacity:.38;stroke-dasharray:4 5}.bar-splice{fill:#111827}.column-center{fill:#111827}.dim{stroke:#1f2937;stroke-width:1.8;marker-start:url(#arrow);marker-end:url(#arrow)}.tick{stroke:#1f2937;stroke-width:1.8}.label{fill:#111827;font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:700}.small{fill:#374151;font-family:Arial,Helvetica,sans-serif;font-size:15px}
+        </style>
+        <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1f2937"/></marker></defs>
+        <rect class="bg" x="0" y="0" width="${svgW}" height="${svgH}"/>
+        <rect class="slab" x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${planW.toFixed(1)}" height="${planH.toFixed(1)}" rx="3"/>
+        ${gridBars.join("")}
+        ${barSpliceMarkers.join("")}
+        ${bayLines.join("")}
+        ${endwallBayLines.join("")}
+        ${columns.join("")}
+        ${channelLabels.join("")}
+        <line class="dim" x1="${x0.toFixed(1)}" y1="${(y1 + 46).toFixed(1)}" x2="${x1.toFixed(1)}" y2="${(y1 + 46).toFixed(1)}"/>
+        <line class="tick" x1="${x0.toFixed(1)}" y1="${(y1 + 26).toFixed(1)}" x2="${x0.toFixed(1)}" y2="${(y1 + 66).toFixed(1)}"/>
+        <line class="tick" x1="${x1.toFixed(1)}" y1="${(y1 + 26).toFixed(1)}" x2="${x1.toFixed(1)}" y2="${(y1 + 66).toFixed(1)}"/>
+        <text class="label" x="${(svgW / 2).toFixed(1)}" y="${(y1 + 82).toFixed(1)}" text-anchor="middle">OUT-TO-OUT OF CONCRETE ${feetInchLabel(length)}</text>
+        <line class="dim" x1="${(x0 - 46).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0 - 46).toFixed(1)}" y2="${y1.toFixed(1)}"/>
+        <line class="tick" x1="${(x0 - 66).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0 - 26).toFixed(1)}" y2="${y0.toFixed(1)}"/>
+        <line class="tick" x1="${(x0 - 66).toFixed(1)}" y1="${y1.toFixed(1)}" x2="${(x0 - 26).toFixed(1)}" y2="${y1.toFixed(1)}"/>
+        <text class="label" x="${(x0 - 64).toFixed(1)}" y="${(svgH / 2).toFixed(1)}" transform="rotate(-90 ${(x0 - 64).toFixed(1)} ${(svgH / 2).toFixed(1)})" text-anchor="middle">OUT-TO-OUT OF CONCRETE ${feetInchLabel(width)}</text>
+        <text class="small" x="${(svgW / 2).toFixed(1)}" y="42" text-anchor="middle">Preliminary plan view - ${formatNumber(width)} ft W x ${formatNumber(length)} ft L; ${bayText}</text>
+        <text class="small" x="${(svgW / 2).toFixed(1)}" y="68" text-anchor="middle">${thicknessText}; final layout subject to engineering and admin review</text>
+      </svg>`;
+    }
+
+    function renderEstimate() {
+      const estimate = calculateEstimate();
+      state.estimate = estimate;
+      applyAccessMode();
+      const thickness = estimate.thickness.preliminaryThicknessIn ? `${estimate.thickness.preliminaryThicknessIn} in` : "Review required";
+      const statusText = estimate.thickness.reviewRequired ? "Review" : "Ready";
+      const statusClass = estimate.thickness.reviewRequired ? "status review" : "status";
+      byId("statusBadge").textContent = statusText;
+      byId("statusBadge").className = statusClass;
+      byId("customerStatus").textContent = statusText;
+      byId("customerStatus").className = statusClass;
+      byId("internalStatus").textContent = estimate.status;
+      byId("internalStatus").className = statusClass;
+
+      byId("customerMetrics").innerHTML = [
+        metric("Project", estimate.project.name),
+        metric("Quote", estimate.project.quoteNumber),
+        metric("Dimensions", `${estimate.geometry.width} ft W x ${estimate.geometry.length} ft L`),
+        metric("Design Bay", `${estimate.geometry.designBaySpacing} ft`),
+        metric("Snow Load", `${estimate.snowLoadPsf.toFixed(1)} psf`),
+        metric("Slab Guidance", thickness),
+        metric("Columns", `${estimate.geometry.totalColumnCount}`),
+        metric("Documents", `${estimate.project.documents.length}`)
+      ].join("");
+
+      byId("customerDrawing").innerHTML = renderDrawing(estimate);
+      byId("customerPrice").innerHTML = [
+        `<div><span class="label">Package Price</span><strong>${money(estimate.totals.packagePrice)}</strong></div>`,
+        `<div><span class="label">Tax</span><strong>${money(estimate.totals.tax)}</strong></div>`,
+        `<div><span class="label">Total</span><strong>${money(estimate.totals.total)}</strong></div>`
+      ].join("");
+      byId("customerNotes").className = estimate.thickness.reviewRequired ? "notice warn" : "notice";
+      byId("customerNotes").innerHTML = `<ul class="small-list">${buildCustomerNotes(estimate).map((note) => `<li>${esc(note)}</li>`).join("")}</ul>`;
+
+      byId("internalMetrics").innerHTML = [
+        metric("Material Subtotal", money(estimate.totals.materialSubtotal)),
+        metric("Overhead", money(estimate.totals.overhead)),
+        metric("Engineering", money(estimate.totals.engineering)),
+        metric("Freight", money(estimate.totals.freight)),
+        metric("Markup", `${money(estimate.totals.markup)} (${formatPercent(estimate.totals.markupRate)})`),
+        metric("Tax", money(estimate.totals.tax)),
+        metric("Total", money(estimate.totals.total)),
+        metric("Thrust Assemblies", estimate.thrustPlateAssemblies.count),
+        metric("Columns", estimate.geometry.totalColumnCount),
+        metric("Anchor Bolts", estimate.geometry.totalColumnCount * 4),
+        metric("Docs", estimate.project.documents.length),
+        metric("Status", estimate.status)
+      ].join("");
+
+      byId("internalLines").innerHTML = estimate.lines.map((item) => `
+        <tr>
+          <td>${esc(item.code)}</td>
+          <td>${esc(item.description)}</td>
+          <td class="num">${item.quantity.toLocaleString("en-CA", { maximumFractionDigits: 2 })}</td>
+          <td>${esc(item.unit)}</td>
+          <td class="num">${money(item.unitPrice)}</td>
+          <td class="num">${money(item.totalPrice)}</td>
+          <td>${esc(displayReviewText(item.reviewFlag) || item.basis || item.pricingSource)}</td>
+        </tr>
+      `).join("");
+
+      byId("takeoffPrintMeta").textContent = [
+        estimate.project.quoteNumber || "Draft quote",
+        estimate.customer.name || "Customer not entered",
+        estimate.project.name || "Project not entered",
+        `${estimate.geometry.width} ft W x ${estimate.geometry.length} ft L`,
+        `Slab ${thickness}`
+      ].join(" | ");
+
+      byId("thrustAssemblySummary").className = estimate.thrustPlateAssemblies.count ? "notice" : "notice warn";
+      byId("thrustAssemblySummary").innerHTML = `<ul class="small-list">${buildThrustAssemblyNotes(estimate).map((note) => `<li>${esc(note)}</li>`).join("")}</ul>`;
+
+      byId("estimatingNotes").innerHTML = buildEstimatingNotes(estimate).map((note) => `<li>${esc(note)}</li>`).join("");
+      renderMasterPriceList(estimate);
+      renderDashboard();
+      return estimate;
+    }
+
+    byId("quoteForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const estimate = renderEstimate();
+      recordQuoteRun(estimate);
+      renderDashboard();
+    });
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((item) => item.classList.remove("active"));
+        document.querySelectorAll(".view").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        byId(button.dataset.view).classList.add("active");
+      });
+    });
+
+    function printView(view, printClass) {
+      document.querySelector(`[data-view="${view}"]`).click();
+      document.body.classList.add(printClass);
+      window.print();
+      window.setTimeout(() => document.body.classList.remove(printClass), 250);
+    }
+
+    byId("printCustomer").addEventListener("click", () => {
+      printView("customerView", "print-customer");
+    });
+
+    byId("printTakeoff").addEventListener("click", () => {
+      printView("internalView", "print-takeoff");
+    });
+
+    byId("orderProject").addEventListener("click", async () => {
+      const estimate = state.estimate || renderEstimate();
+      const orderEvent = recordOrderRun(estimate);
+      const filename = orderPackageFilename(estimate);
+      const includeInternalTakeoff = hasInternalAccess();
+      byId("orderStatus").className = "notice";
+      byId("orderStatus").innerHTML = `<strong>Preparing order package.</strong><br>Reading uploaded files and building the email handoff package...`;
+      const attachedFiles = await collectOrderAttachments();
+      const embeddedCount = attachedFiles.filter((file) => file.embedded).length;
+      downloadFile(filename, buildOrderPackageHtml(estimate, orderEvent, {
+        attachedFiles,
+        includeInternalTakeoff
+      }));
+      const mailto = openOrderEmail(estimate, filename, {
+        includeInternalTakeoff,
+        embeddedDocumentCount: embeddedCount
+      });
+      byId("orderStatus").className = "notice";
+      byId("orderStatus").innerHTML = `<strong>Order prepared.</strong><br>Order package generated: ${esc(filename)}.<br>${includeInternalTakeoff ? "Internal material takeoff is included in the order package." : "Customer-safe package generated; internal material takeoff requires unlocked internal mode or the future production backend."}<br>${embeddedCount ? `${embeddedCount} uploaded file(s) were embedded in the package. ` : ""}A prepared email has been opened for ${ORDER_EMAIL_RECIPIENTS.map(esc).join(", ")}. Attach the downloaded order package and any original customer files before sending.`;
+      renderDashboard();
+      state.lastOrderMailto = mailto;
+    });
+
+    byId("newQuoteNumber").addEventListener("click", () => {
+      assignNewQuoteNumber();
+      renderEstimate();
+    });
+
+    byId("setThrustPlateAssemblies").addEventListener("click", () => {
+      const current = byId("thrustPlateAssemblyCount").value || "0";
+      const raw = window.prompt("Thrust plate assemblies required", current);
+      if (raw === null) {
+        return;
+      }
+      const quantity = Number(raw);
+      if (!Number.isFinite(quantity) || quantity < 0) {
+        return;
+      }
+      byId("thrustPlateAssemblyCount").value = String(Math.round(quantity));
+      renderEstimate();
+    });
+
+    byId("unlockInternal").addEventListener("click", () => {
+      const username = normalizeUsername(byId("internalUsername").value);
+      const password = String(byId("internalPassword").value || "");
+      if (INTERNAL_USERS[username] && INTERNAL_USERS[username] === password) {
+        saveInternalAuth(username);
+        byId("internalPassword").value = "";
+        byId("accessMode").value = "internal";
+      } else {
+        clearInternalAuth();
+        state.internalLoginError = "Internal login failed. Please check the username and password.";
+      }
+      applyAccessMode();
+      renderEstimate();
+    });
+
+    byId("lockInternal").addEventListener("click", () => {
+      clearInternalAuth();
+      state.internalLoginError = "";
+      byId("accessMode").value = "builder";
+      byId("internalPassword").value = "";
+      applyAccessMode();
+      renderEstimate();
+    });
+
+    byId("accessMode").addEventListener("change", () => {
+      state.internalLoginError = "";
+      applyAccessMode();
+      renderEstimate();
+    });
+
+    byId("priceListSearch").addEventListener("input", () => {
+      renderMasterPriceList(state.estimate);
+    });
+
+    byId("masterPriceListRows").addEventListener("change", (event) => {
+      const input = event.target;
+      const code = input?.dataset?.code;
+      if (!code) {
+        return;
+      }
+      const value = Number(input.value);
+      if (!Number.isFinite(value) || value < 0) {
+        renderMasterPriceList(state.estimate);
+        return;
+      }
+      const basePrice = baseUnitPrice(catalogItem(code)) ?? 0;
+      const rounded = Math.round(value * 10000) / 10000;
+      if (Math.abs(rounded - basePrice) < 0.0001) {
+        delete priceOverrides[code];
+      } else {
+        priceOverrides[code] = rounded;
+      }
+      savePriceOverrides();
+      renderEstimate();
+    });
+
+    byId("clearPriceOverrides").addEventListener("click", () => {
+      if (!Object.keys(priceOverrides).length) {
+        return;
+      }
+      if (window.confirm && !window.confirm("Clear all master price overrides?")) {
+        return;
+      }
+      priceOverrides = {};
+      storageRemove(PRICE_OVERRIDE_STORAGE_KEY);
+      renderEstimate();
+    });
+
+    byId("clearDashboardData").addEventListener("click", () => {
+      if (window.confirm && !window.confirm("Clear local quote/order KPI test data?")) {
+        return;
+      }
+      storageRemove(KPI_EVENT_STORAGE_KEY);
+      renderDashboard();
+    });
+
+    byId("downloadJson").addEventListener("click", () => {
+      if (!state.estimate) {
+        renderEstimate();
+      }
+      const blob = new Blob([JSON.stringify(state.estimate, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${state.estimate.project.quoteNumber || "estimate"}-summary.json`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+
+    ["input", "change"].forEach((eventName) => {
+      byId("quoteForm").addEventListener(eventName, () => renderEstimate());
+    });
+
+    const savedInternalAuth = loadInternalAuth();
+    if (savedInternalAuth) {
+      state.internalAuthenticated = true;
+      byId("internalUsername").value = savedInternalAuth.username;
+    }
+    initializeBayInputs();
+    applyAccessMode();
+    renderEstimate();
+  </script>
+</body>
+</html>
